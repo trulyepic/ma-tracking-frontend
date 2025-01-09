@@ -1,0 +1,33 @@
+.app-header {
+  background-color: #1a1a1d;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 30px;
+  color: #ffffff;
+  height: 55px;
+}
+
+.app-header-nav {
+  display: flex;
+  gap: 20px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.app-header-nav a {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.app-header-nav a:hover {
+  color: #007bff;
+}
+
+.app-header-user-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+}

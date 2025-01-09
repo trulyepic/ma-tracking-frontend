@@ -1,0 +1,33 @@
+.add-item-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.add-item-form {
+  width: 100%;
+  max-width: 600px;
+}
+
+.add-item-long-note-form-item {
+  margin-top: 15px !important;
+}
+
+.add-item-title {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  color: #ffffff;
+  font-size: larger;
+  font-weight: 600;
+}
+
+.upload-text {
+  color: #ffffff;
+}
+
+/* antd override */
+
+.ant-input-show-count-suffix {
+  color: #8e8e8e !important;
+}

@@ -1,0 +1,90 @@
+.register-container {
+  max-width: 400px;
+  width: 100%;
+  margin: auto;
+  /* margin: 50px auto; */
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  /* align-items: center;
+  justify-content: center; */
+  /* position: absolute;
+  top: 50%;
+  left: 50%; */
+  /* transform: translate(-50%, -50%); */
+}
+
+main {
+  flex: 1; /* Ensures the main section takes up remaining space */
+  display: flex;
+  justify-content: center;
+  align-items: center; /* Centers the content vertically */
+  padding: 250px; /* Prevents content from touching edges on small screens */
+}
+
+.register-container h2 {
+  color: #ffffff;
+  text-align: center;
+  /* margin-bottom: 50px; */
+}
+
+.reg-input {
+  background-color: transparent;
+}
+
+/* sign in */
+
+.sign-placeholder::placeholder {
+  color: #8e8e8e !important;
+}
+
+.signin-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: Roboto;
+  color: #ffffff;
+}
+
+.signin-footer a {
+  color: #ffffff;
+}
+
+.signin-footer a:hover {
+  color: #007bff;
+}
+
+/* antd override */
+
+.ant-input-outlined.ant-input-status-error:not(.ant-input-disabled) {
+  background: transparent !important;
+}
+
+.ant-input-outlined {
+  background-color: transparent !important;
+}
+
+.ant-input-outlined.ant-input-status-success.reg-input {
+  background-color: transparent !important;
+}
+
+.ant-input {
+  color: #ffffff !important;
+}
+
+.anticon.ant-input-password-icon {
+  color: #ffffff !important;
+}
+
+.ant-form-item-label > label {
+  color: #ffffff !important;
+}
+
+/* Adjust positioning for shorter screens */
+@media (max-height: 500px) {
+  .register-container {
+    position: static; /* Allow the form to flow naturally */
+    margin-top: 70px; /* Add spacing below the header */
+    transform: none; /* Disable the centering transform */
+  }
+}
