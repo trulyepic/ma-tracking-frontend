@@ -1,58 +1,83 @@
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { Button, Card, Image, Typography } from "antd";
+import { Button, Card, Image, message, Modal, Typography } from "antd";
 // import Paragraph from "antd/es/skeleton/Paragraph";
 // import Title from "antd/es/skeleton/Title";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import "./CardDetailPage.css";
+import { DiscussionEmbed } from "disqus-react";
+import { deleteUserItem } from "../../apis/api";
 
 const { Title, Paragraph } = Typography;
 
 const CardDetailPage = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
+  const { id } = useParams();
 
   if (!state || !state.itemData) {
     return <div>Card not found!</div>;
   }
-  const { title, imageUrl, content, id, longContent } = state.itemData;
+  const { title, imageUrl, content, longContent, isGuest, isOwner } =
+    state.itemData;
 
   const handleEdit = () => {
     navigate(`/edititem/${id}`);
   };
 
-  const handleDelete = () => {
-    //todo: delelte
+  const confirmDelete = () => {
+    Modal.confirm({
+      title: "Are you sure you want to delete this item?",
+      content: "This action connot be undone.",
+      okText: "Delete",
+      okType: "danger",
+      cancelText: "Cancel",
+      onOk: handleDelete,
+    });
   };
 
-  console.log("itemdata in carpage: ", state.itemData);
+  const handleDelete = async () => {
+    try {
+      await deleteUserItem(id);
+
+      // navigate bact to the previous page
+      navigate(-1);
+      message.success("Item deleted successfully");
+    } catch (error) {
+      console.log("Error deleting item:", error);
+      message.error("Failed to delete the item. Please try again.");
+    }
+  };
+
+  const disqusShortname = "star-k-wiki";
+  const disqusConfig = {
+    url: `http://localhost:3001/card/${id}`,
+    identifier: id,
+    title: title,
+  };
+
+  // console.log("itemdata in carpage: ", state.itemData);
   return (
-    <div
-      className="card-detail-container"
-      //   style={{
-      //     padding: "20px",
-      //     maxWidth: "400px",
-      //     margin: "0 auto",
-      //   }}
-    >
+    <div className="card-detail-container">
       <Title level={3} className="card-title">
         {title}
       </Title>
       <Card
         className="card-cover"
         cover={<Image src={imageUrl} alt={title} />}
-        actions={[
-          <Button
-            type="primary"
-            icon={<EditOutlined />}
-            onClick={handleEdit}
-          ></Button>,
-          <Button
-            danger
-            icon={<DeleteOutlined />}
-            onClick={handleDelete}
-          ></Button>,
-        ]}
+        // actions={[
+        //   <Button
+        //     type="primary"
+        //     icon={<EditOutlined />}
+        //     onClick={handleEdit}
+        //     // disabled={isGuest || isOwner}
+        //   ></Button>,
+        //   <Button
+        //     danger
+        //     icon={<DeleteOutlined />}
+        //     onClick={confirmDelete}
+        //   ></Button>,
+        // ]}
       >
         <Typography>
           <Paragraph className="card-content">
@@ -64,26 +89,11 @@ const CardDetailPage = () => {
           </Paragraph>
         </Typography>
       </Card>
-      {/* <h3 className="card-title">{title || "Untitled Item"}</h3>
-      <div className="card-cover">
-        <img
-          src={imageUrl}
-          alt={title || "No Image Available"}
-          className="card-image"
-        />
+
+      {/* disqus embed */}
+      <div className="disqus-section">
+        <DiscussionEmbed shortname={disqusShortname} config={disqusConfig} />
       </div>
-      <div className="card-actions">
-        <button className="edit-button" onClick={handleEdit}>
-          Edit
-        </button>
-        <button className="delete-button" onClick={handleDelete}>
-          Delete
-        </button>
-      </div>
-      <div className="card-content">
-        <p>{content || "No notes available"}</p>
-        <p>{longContent || "No additional content available"}</p>
-      </div> */}
     </div>
   );
 };

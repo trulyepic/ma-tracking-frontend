@@ -85,7 +85,7 @@ const Header = () => {
       <div>
         <nav className="app-header-nav">
           <Link to="/"> Home</Link>
-          <Link to="/UserListPage">List of Collections</Link>
+          <Link to="/list-collections">Public Collections</Link>
         </nav>
       </div>
       <div className="app-header-user-icon">
@@ -101,7 +101,7 @@ const Header = () => {
               }}
             />
           ) : (
-            <Avatar icon={<UserOutlined />} size={40} />
+            <Avatar className="avatar" icon={<UserOutlined />} size={40} />
           )}
           {/* <UserOutlined
             style={{ fontSize: "24px", cursor: "pointer", color: "#ffffff" }}
@@ -117,8 +117,9 @@ const Header = () => {
               const formData = new FormData();
               formData.append("avatarImage", croppedFile);
 
-              const response = await uploadAvatar(formData);
-              message.success(response);
+              // const response = await uploadAvatar(formData);
+              await uploadAvatar(formData);
+              message.success("Avater successfully uploaded/updated!");
               getUserDetails().then((details) => setUserDetails(details)); // Refresh user details
             } catch {
               message.error("Failed to update avatar.");

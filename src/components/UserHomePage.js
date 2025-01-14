@@ -1,21 +1,57 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./UserHomePage.css";
-import { Button, Dropdown, Input } from "antd";
+import { Button, Dropdown, Input, message, Switch } from "antd";
 import InfiniteScroll from "react-infinite-scroll-component";
 import {
   deleteUserItem,
   getCollectionsDetailWithPagination,
+  getCollectionsDetailWithPaginationId,
   getGuestItemsWithPagination,
   getUserDetails,
+  getUserDetailsById,
+  togglePublicView,
 } from "../apis/api";
 import UserCollectionGrid from "./item-holder/UserCollectionGrid";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { withTooltip } from "./util/helper";
 
 const { Search } = Input;
 
+const useResolvedId = () => {
+  const { id: paramId } = useParams();
+  const location = useLocation();
+  const { state } = location || {};
+  const { userDetails } = state || {};
+  const [authenticatedUser, setAuthenticatedUser] = useState(null);
+
+  useEffect(() => {
+    const fetchAuthenticatedUser = async () => {
+      try {
+        const userDetails = await getUserDetails();
+        setAuthenticatedUser(userDetails);
+        // localStorage.setItem("userId", userDetails.id);
+      } catch (error) {
+        console.warn("Failed to fetch authenticated user details.", error);
+      }
+    };
+
+    fetchAuthenticatedUser();
+  }, []);
+  // const resolvedId = paramId || userDetails?.id;
+
+  // return resolvedId;
+  return paramId || userDetails?.id || authenticatedUser?.id;
+};
 const UserHomePage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { state } = location;
+  const listUserDetails = state?.listUserDetails;
+
+  const id = useResolvedId();
+  const userIdRef = useRef(null);
+
   const [sortLabel, setSortLabel] = useState("Sort By Ratings");
   const [items, setItems] = useState([]);
   const [hasMore, setHasMore] = useState(true);
@@ -23,13 +59,53 @@ const UserHomePage = () => {
   const [page, setPage] = useState(1); // Track current page
   const [userName, setUserName] = useState("User");
   const [isGuest, setIsGuest] = useState(false);
+  const [publicView, setPublicView] = useState(false);
+  const [userData, setUserData] = useState(null);
+  const [isOwner, setIsOwner] = useState(false);
 
   const ITEMS_PER_PAGE = 20; // Define items per page (matches API limit)
 
-  // useEffect(() => {
-  //   fetchUserName();
-  //   fetchMoreData();
-  // }, []);
+  useEffect(() => {
+    const validateOwnership = async () => {
+      try {
+        const userDetails = await getUserDetails();
+        // const userID2 = localStorage.getItem("userId")
+        console.log("userDetails test: ", userDetails);
+        const ownerStatus = userDetails.id === Number(id);
+        setIsOwner(ownerStatus);
+        // setIsOwner(userDetails.id === Number(id));
+        if (ownerStatus) {
+          await fetchPaginationData(1, true); // Reset items for the owner
+        }
+      } catch (error) {
+        console.warn("Error validating ownership:", error);
+      }
+    };
+
+    validateOwnership();
+  }, [id, location]);
+
+  useEffect(() => {
+    const fetchPublicViewStatus = async () => {
+      try {
+        const userDetails = await getUserDetails();
+        setPublicView(userDetails.publicView || false);
+        setUserData(userDetails);
+
+        //check if the athenticated user matches the collection owner
+        setIsOwner(userDetails.id === Number(id));
+        // setOwnerId(userDetails.id);
+      } catch (error) {
+        // console.error("Error fetching user details:", error);
+        console.warn(
+          "Unable to fetch user details. User may not be logged in.",
+          error
+        );
+      }
+    };
+
+    fetchPublicViewStatus();
+  }, []);
 
   useEffect(() => {
     const initializePage = async () => {
@@ -69,27 +145,42 @@ const UserHomePage = () => {
   };
 
   const fetchPaginationData = async (pageNumber = 1, resetItems = false) => {
+    console.log("Fetching data for user ID:", id);
     //todo: use localstorage so the api is not called every time a user reloads the page
 
     console.log("isGuest:", isGuest);
     console.log("Fetching page:", pageNumber, "with limit:", ITEMS_PER_PAGE);
     try {
-      const fetchFunction = isGuest
-        ? getGuestItemsWithPagination
-        : getCollectionsDetailWithPagination;
+      let response;
+      if (isGuest && !id) {
+        // Fetch guest items if user is a guest and no ID is specified
+        response = await getGuestItemsWithPagination(
+          pageNumber,
+          ITEMS_PER_PAGE
+        );
+      } else if (id) {
+        // fetch collections for a specific user ID
+        response = await getCollectionsDetailWithPaginationId(
+          pageNumber,
+          ITEMS_PER_PAGE,
+          id
+        );
+      } else {
+        // default behaviour for logged-in user's own items
+        response = await getCollectionsDetailWithPagination(
+          pageNumber,
+          ITEMS_PER_PAGE
+        );
+      }
 
-      const response = await fetchFunction(pageNumber, ITEMS_PER_PAGE);
+      // const fetchFunction = isGuest
+      //   ? getGuestItemsWithPagination
+      //   : getCollectionsDetailWithPagination;
+
+      // const response = await fetchFunction(pageNumber, ITEMS_PER_PAGE);
       const newItems = response.items;
       const totalItems = newItems.totalItems;
 
-      // const newItems = await getCollectionsDetailWithPagination(
-      //   pageNumber,
-      //   ITEMS_PER_PAGE
-      // );
-      // console.log("items from api:", totalItems);
-      // console.log("response: ", response);
-      // console.log("newItems : ", newItems);
-      // console.log("response totalitems: ", response.totalItems);
       if (resetItems) {
         setItems(newItems);
         setPage(2);
@@ -170,12 +261,42 @@ const UserHomePage = () => {
       alert("Failed to delete item. Please try again.");
     }
   };
+
+  const handleTogglePublicView = async (checked) => {
+    try {
+      const collectionLink =
+        window.location.href + `user-homepage/${userData.id}`;
+      const response = await togglePublicView(checked, collectionLink);
+      setPublicView(checked);
+      message.success(response);
+      console.log("collection link: ", collectionLink);
+    } catch (error) {
+      console.error("Error toggling public view:", error);
+      message.error("Failed to update public view setting.");
+    }
+  };
+
   console.log("has more  : ", hasMore);
+  console.log("user homepage state: ", state);
+  console.log("isGuest in home: ", isGuest);
+  console.log("isOwner in home: ", isOwner);
   return (
     <div>
       <div className="user-home-page-container">
+        {isGuest && (
+          <div className="user-home-main-header">
+            <h1>Welcome to Ma-Trac.</h1>
+            <span className="suer-home-main-sub-txt">
+              Start creating your collections now!
+            </span>
+          </div>
+        )}
         <header className="user-home-page-header">
-          <h1 className="user-home-page-title">{userName}'s collections</h1>
+          <h1 className="user-home-page-title">
+            {listUserDetails
+              ? `${listUserDetails.userName}'s Collections`
+              : `${userName}'s Collections`}
+          </h1>
           <div className="user-home-page-search-dropdown">
             <Search
               className="user-home-search-input"
@@ -183,16 +304,41 @@ const UserHomePage = () => {
               placeholder="Search collections"
               allowClear
             />
-            <Dropdown.Button
+            {/* todo: might implement this later */}
+            {/* <Dropdown.Button
               menu={menuProps}
               size="large"
               trigger={["click"]}
               className="user-home-dropdown"
-            ></Dropdown.Button>
+            ></Dropdown.Button> */}
 
-            <Button size="large" onClick={() => navigate("/additem")}>
-              <span className="user-home-add-btn">Add item</span>
-            </Button>
+            <div className="right-controls">
+              <div style={{ marginBottom: "20px" }}>
+                <label style={{ marginRight: "10px" }}>
+                  Allow Public View:
+                </label>
+                {withTooltip(
+                  <Switch
+                    checked={publicView}
+                    onChange={handleTogglePublicView}
+                    disabled={isGuest || !isOwner}
+                  />,
+                  isGuest || !isOwner,
+                  isGuest
+                )}
+              </div>
+              {withTooltip(
+                <Button
+                  size="large"
+                  onClick={() => navigate("/additem")}
+                  disabled={isGuest || !isOwner}
+                >
+                  <span className="user-home-add-btn">Add item</span>
+                </Button>,
+                isGuest || !isOwner,
+                isGuest
+              )}
+            </div>
           </div>
           <div className="filters">
             <div className="sort-buttons">
@@ -219,6 +365,8 @@ const UserHomePage = () => {
           <UserCollectionGrid
             items={filteredItems}
             onDelete={handleDeleteItem} //pass isGuest to disable delete and edit for guest
+            isOwner={isOwner}
+            isGuest={isGuest}
           />
           {/* {hasMore && (
           <Button

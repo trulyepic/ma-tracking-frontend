@@ -26,6 +26,20 @@
   color: #ffffff;
 }
 
+.edit-btns {
+  display: flex;
+  gap: 10px;
+}
+
+.cancel-btn {
+  color: #ffffff !important;
+}
+
+.cancel-btn:hover {
+  color: #c68700 !important;
+  border-color: #c68700 !important;
+}
+
 /* antd override */
 
 .ant-input-show-count-suffix {

@@ -1,0 +1,79 @@
+.list-collections-page {
+  padding: 20px;
+  color: #ffffff;
+}
+
+.list-collection-header {
+  text-align: center;
+  font-size: 2rem;
+  color: #ffffff;
+  margin-bottom: 20px;
+}
+
+.list-card {
+  display: flex !important;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center !important;
+  background-color: #1a1a1d;
+  padding: 15px;
+  margin: 20px auto;
+  /* margin-bottom: 20px; */
+  border-radius: 5px;
+  max-width: 800px;
+  width: 100%;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.list-card .ant-list-item-meta {
+  flex: 1;
+}
+
+.list-card .ant-list-item-meta-title a {
+  color: #ffffff !important;
+}
+
+.list-item-title {
+  color: #ffffff !important;
+}
+
+.list-item-title:hover {
+  color: #007bff !important;
+  cursor: pointer;
+}
+
+.list-card .ant-list-item-meta-title a:hover {
+  color: #007bff !important;
+}
+
+.list-card .list-card-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.list-card .list-card-content span {
+  color: #b3b3b3 !important;
+}
+
+.list-card .time-ago {
+  color: rgb(81, 81, 81) !important;
+  font-size: 0.9em;
+  text-align: right;
+  padding-right: 10px !important;
+}
+
+.like-section {
+  display: flex;
+  align-items: center;
+  padding-right: 10px;
+  gap: 5px;
+  font-size: 16px;
+  color: #ffffff;
+}
+
+.list-card .ant-list-item-meta-avatar {
+  margin-left: 10px; /* Adds space to the left of the avatar */
+  margin-right: 15px; /* Adds space between the avatar and the rest of the content */
+}

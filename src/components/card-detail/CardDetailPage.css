@@ -29,6 +29,11 @@
   color: #ffffff !important;
 }
 
+.disqus-section {
+  margin-top: 40px;
+}
+
+/* antd section */
 .ant-card-body {
   background-color: #1a1a1d !important;
 }

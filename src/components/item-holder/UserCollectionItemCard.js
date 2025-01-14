@@ -3,6 +3,7 @@ import { Button, Modal } from "antd";
 import React from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { useNavigate } from "react-router-dom";
+import { withTooltip } from "../util/helper";
 
 const UserCollectionItemCard = ({
   title,
@@ -12,6 +13,8 @@ const UserCollectionItemCard = ({
   notes,
   onDelete,
   itemData,
+  isGuest,
+  isOwner,
 }) => {
   const navigate = useNavigate();
   const confirmDelete = () => {
@@ -30,13 +33,19 @@ const UserCollectionItemCard = ({
   };
 
   const handleEdit = () => {
-    navigate(`/edititem/${id}`);
+    navigate(`/edititem/${id}`, { state: { existingItem: itemData } });
   };
 
   const handleCardClick = () => {
-    navigate(`/card/${id}`, { state: { itemData } });
+    navigate(`/card/${id}`, { state: { itemData, isGuest, isOwner } });
   };
 
+  // console.log(
+  //   "guest in user collection card: ",
+  //   isGuest,
+  //   "isowner: ",
+  //   !isOwner
+  // );
   // console.log("itemData from usercollection item: ", itemData);
   return (
     <div className="user-collection-item-card">
@@ -56,28 +65,39 @@ const UserCollectionItemCard = ({
 
       <div className="user-collection-item-card-content">
         <h3>{title}</h3>
-        <p>{genre}</p>
-        <p>{notes}</p>
+        <p className="user-collection-item-card-tags">{genre}</p>
+        <p className="user-collection-item-card-notes">{notes}</p>
         <div className="card-btns">
-          <Button
-            type="primary"
-            size="small"
-            danger
-            onClick={confirmDelete}
-            icon={<DeleteOutlined />}
-            className="user-collection-delete-btn"
-          >
-            {/* Delete */}
-          </Button>
+          {withTooltip(
+            <Button
+              type="primary"
+              size="medium"
+              danger
+              onClick={confirmDelete}
+              icon={<DeleteOutlined />}
+              className="user-collection-delete-btn"
+              disabled={isGuest || !isOwner}
+            >
+              {/* Delete */}
+            </Button>,
+            isGuest || !isOwner,
+            isGuest
+          )}
 
-          <Button
-            type="primary"
-            size="small"
-            onClick={handleEdit}
-            icon={<EditOutlined />}
-          >
-            {/* Edit */}
-          </Button>
+          {withTooltip(
+            <Button
+              type="primary"
+              size="medium"
+              onClick={handleEdit}
+              icon={<EditOutlined />}
+              className="user-collection-edit-btn"
+              disabled={isGuest || !isOwner}
+            >
+              {/* Edit */}
+            </Button>,
+            isGuest || !isOwner,
+            isGuest
+          )}
         </div>
       </div>
     </div>

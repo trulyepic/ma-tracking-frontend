@@ -1,4 +1,4 @@
-import { Button, Form, Input, message, Upload } from "antd";
+import { Button, Form, Input, message, Tooltip, Upload } from "antd";
 import React, { useState } from "react";
 import { saveUserItem } from "../../apis/api";
 import { UploadOutlined } from "@ant-design/icons";
@@ -47,7 +47,7 @@ const AddItem = () => {
         imageFile
       );
 
-      console.log("values from handlSubmit: ", values);
+      // console.log("values from handlSubmit: ", values);
       message.success("Item saved successfully!");
       form.resetFields(); // Clear form
       setImageFile(null);
@@ -58,6 +58,10 @@ const AddItem = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleCancel = () => {
+    navigate(-1); // Navigate back to the previous page
   };
 
   // console.log("Image file: ", imageFile);
@@ -92,12 +96,12 @@ const AddItem = () => {
           rules={[
             {
               required: true,
-              message: "Please enter the genre.",
+              message: "Please enter tags.",
             },
           ]}
         >
           <Input
-            placeholder="Enter genre. Use , to separate multiple genres"
+            placeholder="Enter tags. Use , to separate multiple tags"
             className="sign-placeholder"
           />
         </Form.Item>
@@ -132,26 +136,37 @@ const AddItem = () => {
         </Form.Item>
 
         <Form.Item label="Image File" required>
-          <Upload
-            listType="picture"
-            accept="image/*"
-            maxCount={1}
-            beforeUpload={(file) => {
-              setImageFile(file);
-              return false;
-            }} // Prevent auto upload
-            onChange={handleFileChange} // Handle file changes
-            onRemove={() => setImageFile(null)} // Clear file on remove
-          >
-            <Button className="upload-text" icon={<UploadOutlined />}>
-              Upload Image
-            </Button>
-          </Upload>
+          <Tooltip title="size preferences width min 340, max 450">
+            <Upload
+              listType="picture"
+              accept="image/*"
+              maxCount={1}
+              beforeUpload={(file) => {
+                setImageFile(file);
+                return false;
+              }} // Prevent auto upload
+              onChange={handleFileChange} // Handle file changes
+              onRemove={() => setImageFile(null)} // Clear file on remove
+            >
+              <Button className="upload-text" icon={<UploadOutlined />}>
+                Upload Image
+              </Button>
+            </Upload>
+          </Tooltip>
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit" loading={loading}>
-            Submit
-          </Button>
+          <div className="edit-btns">
+            <Button type="primary" htmlType="submit" loading={loading}>
+              Submit
+            </Button>
+            <Button
+              type="default"
+              onClick={handleCancel}
+              className="cancel-btn"
+            >
+              Cancel
+            </Button>
+          </div>
         </Form.Item>
       </Form>
     </div>
