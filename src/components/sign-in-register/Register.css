@@ -54,6 +54,10 @@ main {
   color: #007bff;
 }
 
+.register-notice {
+  color: #fa5f5f;
+}
+
 /* antd override */
 
 .ant-input-outlined.ant-input-status-error:not(.ant-input-disabled) {

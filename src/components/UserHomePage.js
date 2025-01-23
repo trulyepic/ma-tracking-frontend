@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./UserHomePage.css";
-import { Button, Dropdown, Input, message, Switch } from "antd";
+import { Button, Divider, Dropdown, Input, message, Switch } from "antd";
 import InfiniteScroll from "react-infinite-scroll-component";
 import {
   deleteUserItem,
@@ -15,6 +15,7 @@ import UserCollectionGrid from "./item-holder/UserCollectionGrid";
 import axios from "axios";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { withTooltip } from "./util/helper";
+import { DownOutlined, UpOutlined } from "@ant-design/icons";
 
 const { Search } = Input;
 
@@ -62,6 +63,7 @@ const UserHomePage = () => {
   const [publicView, setPublicView] = useState(false);
   const [userData, setUserData] = useState(null);
   const [isOwner, setIsOwner] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   const ITEMS_PER_PAGE = 20; // Define items per page (matches API limit)
 
@@ -70,7 +72,7 @@ const UserHomePage = () => {
       try {
         const userDetails = await getUserDetails();
         // const userID2 = localStorage.getItem("userId")
-        console.log("userDetails test: ", userDetails);
+        // console.log("userDetails test: ", userDetails);
         const ownerStatus = userDetails.id === Number(id);
         setIsOwner(ownerStatus);
         // setIsOwner(userDetails.id === Number(id));
@@ -145,11 +147,11 @@ const UserHomePage = () => {
   };
 
   const fetchPaginationData = async (pageNumber = 1, resetItems = false) => {
-    console.log("Fetching data for user ID:", id);
+    // console.log("Fetching data for user ID:", id);
     //todo: use localstorage so the api is not called every time a user reloads the page
 
-    console.log("isGuest:", isGuest);
-    console.log("Fetching page:", pageNumber, "with limit:", ITEMS_PER_PAGE);
+    // console.log("isGuest:", isGuest);
+    // console.log("Fetching page:", pageNumber, "with limit:", ITEMS_PER_PAGE);
     try {
       let response;
       if (isGuest && !id) {
@@ -276,10 +278,14 @@ const UserHomePage = () => {
     }
   };
 
-  console.log("has more  : ", hasMore);
-  console.log("user homepage state: ", state);
-  console.log("isGuest in home: ", isGuest);
-  console.log("isOwner in home: ", isOwner);
+  const toggleCollapse = () => {
+    setIsCollapsed((prev) => !prev);
+  };
+
+  // console.log("has more  : ", hasMore);
+  // console.log("user homepage state: ", state);
+  // console.log("isGuest in home: ", isGuest);
+  // console.log("isOwner in home: ", isOwner);
   return (
     <div>
       <div className="user-home-page-container">
@@ -328,12 +334,8 @@ const UserHomePage = () => {
                 )}
               </div>
               {withTooltip(
-                <Button
-                  size="large"
-                  onClick={() => navigate("/additem")}
-                  disabled={isGuest || !isOwner}
-                >
-                  <span className="user-home-add-btn">Add item</span>
+                <Button size="large" disabled={isGuest || !isOwner}>
+                  <span className="user-home-add-btn">Add Collection</span>
                 </Button>,
                 isGuest || !isOwner,
                 isGuest
@@ -354,21 +356,50 @@ const UserHomePage = () => {
               ))}
             </div>
           </div>
-        </header>
 
-        <InfiniteScroll
-          dataLength={filteredItems.length}
-          next={fetchMoreData}
-          hasMore={hasMore}
-          loader={<h4>Loading...</h4>}
-        >
-          <UserCollectionGrid
-            items={filteredItems}
-            onDelete={handleDeleteItem} //pass isGuest to disable delete and edit for guest
-            isOwner={isOwner}
-            isGuest={isGuest}
-          />
-          {/* {hasMore && (
+          <span className="collection-name-header">Collection Name</span>
+
+          <div
+            className="divider-container"
+            // className={`divider-container ${isCollapsed ? "collapsed" : ""}`}
+          >
+            <Divider
+              className={`custom-divider ${isCollapsed ? "collapsed" : ""}`}
+              onClick={toggleCollapse}
+            >
+              <div className="actions-container">
+                <Button
+                  type="primary"
+                  className="add-item-collection"
+                  onClick={() => navigate("/additem")}
+                >
+                  Add Item
+                </Button>
+              </div>
+            </Divider>
+            {/* <Button
+              type="text"
+              icon={isCollapsed ? <UpOutlined /> : <DownOutlined />}
+              onClick={toggleCollapse}
+              className="toggle-button"
+              size="large"
+            /> */}
+          </div>
+        </header>
+        {!isCollapsed && (
+          <InfiniteScroll
+            dataLength={filteredItems.length}
+            next={fetchMoreData}
+            hasMore={hasMore}
+            loader={<h4>Loading...</h4>}
+          >
+            <UserCollectionGrid
+              items={filteredItems}
+              onDelete={handleDeleteItem} //pass isGuest to disable delete and edit for guest
+              isOwner={isOwner}
+              isGuest={isGuest}
+            />
+            {/* {hasMore && (
           <Button
             type="primary"
             onClick={fetchMoreData}
@@ -378,7 +409,8 @@ const UserHomePage = () => {
             Load more items
           </Button>
         )} */}
-        </InfiniteScroll>
+          </InfiniteScroll>
+        )}
       </div>
     </div>
   );

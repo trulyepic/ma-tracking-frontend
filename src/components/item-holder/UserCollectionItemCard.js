@@ -15,25 +15,26 @@ const UserCollectionItemCard = ({
   itemData,
   isGuest,
   isOwner,
+  collectionId,
 }) => {
   const navigate = useNavigate();
-  const confirmDelete = () => {
-    Modal.confirm({
-      title: "Are you sure you want to delete this item?",
-      content: "This action cannot be undone.",
-      okText: "Delete",
-      okType: "danger",
-      cancelText: "Cancel",
-      onOk: () => {
-        if (onDelete) {
-          onDelete(id);
-        }
-      },
-    });
-  };
+  // const confirmDelete = () => {
+  //   Modal.confirm({
+  //     title: "Are you sure you want to delete this item?",
+  //     content: "This action cannot be undone.",
+  //     okText: "Delete",
+  //     okType: "danger",
+  //     cancelText: "Cancel",
+  //     onOk: () => {
+  //       onDelete(itemData.collectionId, id);
+  //     },
+  //   });
+  // };
 
   const handleEdit = () => {
-    navigate(`/edititem/${id}`, { state: { existingItem: itemData } });
+    navigate(`/edititem/${id}`, {
+      state: { existingItem: itemData, collectionId },
+    });
   };
 
   const handleCardClick = () => {
@@ -46,7 +47,7 @@ const UserCollectionItemCard = ({
   //   "isowner: ",
   //   !isOwner
   // );
-  // console.log("itemData from usercollection item: ", itemData);
+  // console.log("itemData from usercollection item: ", collectionId);
   return (
     <div className="user-collection-item-card">
       <LazyLoadImage
@@ -73,7 +74,7 @@ const UserCollectionItemCard = ({
               type="primary"
               size="medium"
               danger
-              onClick={confirmDelete}
+              onClick={() => onDelete(id)}
               icon={<DeleteOutlined />}
               className="user-collection-delete-btn"
               disabled={isGuest || !isOwner}

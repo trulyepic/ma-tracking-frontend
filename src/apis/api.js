@@ -83,7 +83,7 @@ export const loginUser = async (userInfo) => {
 export const getUserDetails = async () => {
   try {
     const token = localStorage.getItem("authToken");
-    console.log("Token retrieved from localStorage:", token); // Debugging
+    // console.log("Token retrieved from localStorage:", token); // Debugging
 
     if (!token) {
       throw new Error("No authentication token found");
@@ -196,6 +196,8 @@ export const updateUserItem = async (itemId, itemDetails, imageFile) => {
     if (itemDetails.content) formData.append("content", itemDetails.content);
     if (itemDetails.longContent)
       formData.append("longContent", itemDetails.longContent);
+    if (itemDetails.collectionId)
+      formData.append("collectionId", itemDetails.collectionId);
     if (imageFile) formData.append("imageFile", imageFile);
 
     //make PUT request to update the user item

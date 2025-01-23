@@ -8,6 +8,26 @@
   height: 55px;
 }
 
+.logo-container {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  /* gap: 2px; */
+}
+
+.app-logo {
+  height: 80px;
+  width: auto;
+}
+
+.app-title {
+  font-size: 24px;
+  font-size: 400;
+  /* padding-right: -5px;
+  text-decoration: none;
+  color: #ffffff; */
+}
+
 .app-header-nav {
   display: flex;
   gap: 20px;
@@ -32,7 +52,21 @@
   margin-left: auto;
 }
 
+.avatar {
+  transition: filter 0.3s ease, transform 0.3s ease !important;
+}
+
 .avatar:hover {
   background-color: rgba(255, 255, 255, 0.1) !important;
   cursor: pointer !important;
+}
+
+.avatar img {
+  transition: filter 0.3s ease, transform 0.3s ease;
+}
+
+.app-header-user-icon:hover {
+  /* background-color: rgba(255, 255, 255, 0.1) !important; */
+  cursor: pointer !important;
+  transform: scale(1.07) !important;
 }

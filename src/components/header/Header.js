@@ -10,6 +10,7 @@ import {
 } from "@ant-design/icons";
 import { getUserDetails, uploadAvatar } from "../../apis/api";
 import AvatarUpload from "../sign-in-register/AvatarUpload";
+import myLogo from "../../components/images/logo/myLogo.png";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -54,7 +55,7 @@ const Header = () => {
       <Menu.Item
         key="settings"
         icon={<SettingOutlined />}
-        onClick={() => navigate("/settings")}
+        // onClick={() => navigate("/settings")}
       >
         Settings
       </Menu.Item>
@@ -80,8 +81,16 @@ const Header = () => {
     </Menu>
   );
 
+  const handleLogoClick = () => {
+    navigate("/");
+  };
+
   return (
     <header className="app-header">
+      <div className="logo-container" onClick={handleLogoClick}>
+        <img src={myLogo} alt="Logo" className="app-logo" />
+        <span className="app-title">Ex-hibit</span>
+      </div>
       <div>
         <nav className="app-header-nav">
           <Link to="/"> Home</Link>

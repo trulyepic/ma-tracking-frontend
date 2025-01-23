@@ -77,3 +77,26 @@
   margin-left: 10px; /* Adds space to the left of the avatar */
   margin-right: 15px; /* Adds space between the avatar and the rest of the content */
 }
+
+.ant-pagination {
+  margin: 20px auto 0;
+  display: flex;
+  justify-content: center;
+}
+
+.ant-pagination-next button {
+  color: #ffffff !important;
+}
+
+.ant-pagination-prev button {
+  color: #ffffff !important;
+}
+
+.ant-pagination .ant-pagination-disabled .ant-pagination-item-link {
+  color: #ffffff65 !important;
+}
+
+.ant-select-selector {
+  background-color: transparent !important;
+  color: #ffffff !important;
+}

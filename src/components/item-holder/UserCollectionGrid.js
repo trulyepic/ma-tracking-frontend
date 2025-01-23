@@ -1,7 +1,13 @@
 import React from "react";
 import UserCollectionItemCard from "./UserCollectionItemCard";
 
-const UserCollectionGrid = ({ items, onDelete, isOwner, isGuest }) => {
+const UserCollectionGrid = ({
+  items,
+  onDelete,
+  isOwner,
+  isGuest,
+  collectionId,
+}) => {
   // console.log("items from user collection grid: ", items);
   return (
     <div className="user-collection-grid">
@@ -17,6 +23,7 @@ const UserCollectionGrid = ({ items, onDelete, isOwner, isGuest }) => {
           onDelete={onDelete}
           isOwner={isOwner}
           isGuest={isGuest}
+          collectionId={collectionId}
         />
       ))}
     </div>

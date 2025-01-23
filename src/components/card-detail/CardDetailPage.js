@@ -15,39 +15,14 @@ const CardDetailPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [rotation, setRotation] = useState(0);
+
   if (!state || !state.itemData) {
     return <div>Card not found!</div>;
   }
   const { title, imageUrl, content, longContent, isGuest, isOwner } =
     state.itemData;
-
-  const handleEdit = () => {
-    navigate(`/edititem/${id}`);
-  };
-
-  const confirmDelete = () => {
-    Modal.confirm({
-      title: "Are you sure you want to delete this item?",
-      content: "This action connot be undone.",
-      okText: "Delete",
-      okType: "danger",
-      cancelText: "Cancel",
-      onOk: handleDelete,
-    });
-  };
-
-  const handleDelete = async () => {
-    try {
-      await deleteUserItem(id);
-
-      // navigate bact to the previous page
-      navigate(-1);
-      message.success("Item deleted successfully");
-    } catch (error) {
-      console.log("Error deleting item:", error);
-      message.error("Failed to delete the item. Please try again.");
-    }
-  };
 
   const disqusShortname = "star-k-wiki";
   const disqusConfig = {
@@ -56,40 +31,87 @@ const CardDetailPage = () => {
     title: title,
   };
 
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const hideModal = () => {
+    setIsModalVisible(false);
+  };
+
+  const rotateImage = () => {
+    setRotation((prevRotation) => prevRotation + 90);
+  };
+
   // console.log("itemdata in carpage: ", state.itemData);
   return (
-    <div className="card-detail-container">
-      <Title level={3} className="card-title">
-        {title}
-      </Title>
-      <Card
-        className="card-cover"
-        cover={<Image src={imageUrl} alt={title} />}
-        // actions={[
-        //   <Button
-        //     type="primary"
-        //     icon={<EditOutlined />}
-        //     onClick={handleEdit}
-        //     // disabled={isGuest || isOwner}
-        //   ></Button>,
-        //   <Button
-        //     danger
-        //     icon={<DeleteOutlined />}
-        //     onClick={confirmDelete}
-        //   ></Button>,
-        // ]}
+    <div>
+      <div className="card-detail-container">
+        <Title level={3} className="card-title">
+          {title}
+        </Title>
+        <Card
+          className="card-cover"
+          cover={
+            <Image
+              src={imageUrl}
+              alt={title}
+              preview={false}
+              onClick={showModal}
+              // style={{ transform: `rotate(${rotation}deg)` }} //rotation
+            />
+          }
+        >
+          <Typography>
+            <Paragraph className="card-content">
+              {content || "No notes"}
+            </Paragraph>
+
+            <Paragraph className="card-long-content">
+              {longContent || "No additional content available"}
+            </Paragraph>
+          </Typography>
+        </Card>
+      </div>
+
+      {/* Modal for larger card preview */}
+      <Modal
+        visible={isModalVisible}
+        footer={null}
+        onCancel={hideModal}
+        centered
+        width={700} // Adjust modal width for better preview
+        className="card-detail-modal"
       >
-        <Typography>
-          <Paragraph className="card-content">
-            {content || "No notes"}
-          </Paragraph>
-
-          <Paragraph className="card-long-content">
-            {longContent || "No additional content available"}
-          </Paragraph>
-        </Typography>
-      </Card>
-
+        <Card
+          cover={
+            <Image
+              src={imageUrl}
+              alt={title}
+              preview={false}
+              style={{
+                transform: `rotate(${rotation}deg)`,
+                transition: "transform 0.5s ease",
+              }}
+            />
+          }
+        >
+          <Button onClick={rotateImage} className="card-long-content">
+            Rotate Image
+          </Button>
+          <Typography>
+            <Title level={4} className="card-title">
+              {title}
+            </Title>
+            {/* <Paragraph className="card-content">
+              {content || "No notes"}
+            </Paragraph> */}
+            <Paragraph className="card-long-content">
+              {longContent || "No additional content available"}
+            </Paragraph>
+          </Typography>
+        </Card>
+      </Modal>
       {/* disqus embed */}
       <div className="disqus-section">
         <DiscussionEmbed shortname={disqusShortname} config={disqusConfig} />

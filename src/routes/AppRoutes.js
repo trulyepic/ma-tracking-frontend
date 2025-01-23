@@ -8,11 +8,13 @@ import EditItem from "../components/add-item/EditItem";
 import CardDetailPage from "../components/card-detail/CardDetailPage";
 import ListCollectionsPage from "../components/public-list-collections/ListCollectionsPage";
 import UserHomePage from "../components/UserHomePage";
+import CollectionHomePage from "../components/CollectionHomePage";
+import AddCollection from "../components/add-item/AddCollection";
 
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route path="/" element={<UserHomePage />} />
+      <Route path="/" element={<CollectionHomePage />} />
       <Route path="/signin" element={<SignIn />} />
       <Route path="/register" element={<Register />} />
       <Route path="/additem" element={<AddItem />} />
@@ -22,6 +24,8 @@ const AppRoutes = () => {
 
       {/* Dynamic route for user homepage */}
       <Route path="/user-homepage/:id" element={<UserHomePage />} />
+      <Route path="/collection-homepage/:id" element={<CollectionHomePage />} />
+      <Route path="/addCollection" element={<AddCollection />} />
     </Routes>
   );
 };

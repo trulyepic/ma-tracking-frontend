@@ -9,11 +9,12 @@ import {
   unlikeCollection,
   unlikeItem,
 } from "../../apis/api";
-import { Avatar, Button, List, message } from "antd";
+import { Avatar, Button, List, message, Pagination } from "antd";
 import "./ListCollectionsPage.css";
 import moment from "moment";
 import { HeartFilled, HeartOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet";
 
 const ListCollectionsPage = () => {
   const navigate = useNavigate();
@@ -21,6 +22,8 @@ const ListCollectionsPage = () => {
   const [publicUsers, setPublicUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentUserId, setCurrentUserId] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
 
   useEffect(() => {
     const fetchUserDetails = async () => {
@@ -30,6 +33,7 @@ const ListCollectionsPage = () => {
           const userDetails = await getUserDetails();
           setCurrentUserId(userDetails.id); // Store current user ID
         } catch (error) {
+          localStorage.removeItem("authToken");
           console.error("Failed to fetch user details:", error);
         }
       }
@@ -144,7 +148,8 @@ const ListCollectionsPage = () => {
 
   // Navigate with isOwner
   const navigateToUserHomePage = (user) => {
-    navigate(`/user-homepage/${user.id}`, {
+    // console.log("user in list collection: ", user);
+    navigate(`/collection-homepage/${user.id}`, {
       state: {
         listUserDetails: user,
         isGuest: !localStorage.getItem("authToken"),
@@ -153,13 +158,38 @@ const ListCollectionsPage = () => {
     });
   };
 
+  // calculate paginated data
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+  const paginatedUsers = publicUsers.slice(startIndex, endIndex);
+
   return (
     <div className="list-collections-page">
+      <Helmet>
+        <title>Public Collections | Ex-hibit</title>
+        <meta
+          name="description"
+          content="Explore public collections shared by the community. 
+          Like, view, and navigate various collections."
+        />
+        <meta
+          name="keywords"
+          content="collections, public, browse, share, social, social media,
+        cool, manhwa, manga, like"
+        />
+        <meta property="og:title" content="Public Collections | Ex-hibit" />
+        <meta
+          property="og:description"
+          content="Explore collections shared by the community."
+        />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="" />
+      </Helmet>
       <h1 className="list-collection-header">Public Collections</h1>
       <List
         loading={loading}
         itemLayout="horizontal"
-        dataSource={publicUsers}
+        dataSource={paginatedUsers}
         renderItem={(user) => (
           <List.Item className="list-card">
             <List.Item.Meta
@@ -210,6 +240,17 @@ const ListCollectionsPage = () => {
             </div>
           </List.Item>
         )}
+      />
+      <Pagination
+        size="large"
+        current={currentPage}
+        pageSize={pageSize}
+        total={publicUsers.length}
+        onChange={(page, pageSize) => {
+          setCurrentPage(page);
+          setPageSize(pageSize);
+        }}
+        showSizeChanger
       />
     </div>
   );
