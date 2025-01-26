@@ -1,79 +1,89 @@
-import { Button, Form, Input, message, Upload } from "antd";
-import React, { useState } from "react";
+import {
+  Button,
+  Form,
+  Input,
+  message,
+  Modal,
+  Slider,
+  Tooltip,
+  Upload,
+} from "antd";
+import React, { useEffect, useRef, useState } from "react";
 import { saveUserItem } from "../../apis/api";
 import { UploadOutlined } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./AddItem.css";
+import { addItemToCollection } from "../../apis/apiCollection";
+import UploadEditImage from "./UploadEditImage";
+import { base64ToFile } from "../util/helper";
+import SnippingTool from "./SnippingTool";
 
 const AddItem = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { collectionId } = location.state;
 
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [imageFile, setImageFile] = useState(null);
-
-  const handleFileChange = (info) => {
-    const { file } = info;
-
-    // Handle file addition
-    if (info.file.status === "uploading") return;
-
-    if (file.originFileObj) {
-      setImageFile(file.originFileObj);
-    } else if (info.file.status === "removed") {
-      setImageFile(null); // Clear file on removal
-    }
-  };
+  const [previewUrl, setPreviewUrl] = useState(null);
+  const [originalImage, setOriginalImage] = useState(null);
+  const [originalFileName, setOriginalFileName] = useState("");
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [width, setWidth] = useState(400);
+  const [height, setHeight] = useState(500);
+  const [snippingToolActive, setSnippingToolActive] = useState(false);
 
   const handleSubmit = async (values) => {
-    // console.log("Payload to be sent:", { ...values, imageFile });
-    const { title, genre, content, longContent } = values;
-
     if (!imageFile) {
       message.error("Please upload an image file.");
       return;
     }
 
+    // Set default text for empty fields
+    const updatedValues = {
+      ...values,
+      content: values.content || "No notes", // Default for short notes
+      longContent: values.longContent || "No description", // Default for long notes
+    };
+
     setLoading(true);
     try {
-      // Use the saveUserItem API
-      const response = await saveUserItem(
-        {
-          title,
-          genre,
-          content,
-          longContent,
-        },
-        imageFile
-      );
-
-      console.log("values from handlSubmit: ", values);
-      message.success("Item saved successfully!");
-      form.resetFields(); // Clear form
-      setImageFile(null);
+      console.log("Submitting imageFile:", imageFile);
+      await addItemToCollection(collectionId, updatedValues, imageFile);
+      message.success("Item added successfully!");
       navigate("/");
     } catch (error) {
-      console.error("Error saving item:", error);
-      message.error("Failed to save item. Please try again.");
+      console.error("Error adding item:", error);
+      message.error("Failed to add item.");
     } finally {
       setLoading(false);
     }
   };
 
+  const handleCancel = () => {
+    navigate(-1); // Navigate back to the previous page
+  };
+
   // console.log("Image file: ", imageFile);
+  // console.log("previewUrl = ", previewUrl);
   return (
     <div className="add-item-container">
+      {/* <SnippingTool
+        onCapture={handleSnippingCapture}
+        isActive={snippingToolActive}
+      /> */}
       <span className="add-item-title">Enter item details</span>
       <Form
         form={form}
         layout="vertical"
         onFinish={handleSubmit}
-        initialValues={{
-          title: "",
-          genre: "",
-          content: "",
-          longContent: "",
-        }}
+        // initialValues={{
+        //   title: "",
+        //   genre: "",
+        //   content: "",
+        //   longContent: "",
+        // }}
         className="add-item-form"
       >
         <Form.Item
@@ -92,12 +102,12 @@ const AddItem = () => {
           rules={[
             {
               required: true,
-              message: "Please enter the genre.",
+              message: "Please enter tags.",
             },
           ]}
         >
           <Input
-            placeholder="Enter genre. Use , to separate multiple genres"
+            placeholder="Enter tags. Use , to separate multiple tags"
             className="sign-placeholder"
           />
         </Form.Item>
@@ -120,7 +130,7 @@ const AddItem = () => {
 
         <Form.Item
           name="longContent"
-          label="Long Notes"
+          label="Description"
           rules={[{ message: "Please enter any additonal notes." }]}
           className="add-item-long-note-form-item"
         >
@@ -132,26 +142,36 @@ const AddItem = () => {
         </Form.Item>
 
         <Form.Item label="Image File" required>
-          <Upload
-            listType="picture"
-            accept="image/*"
-            maxCount={1}
-            beforeUpload={(file) => {
+          <UploadEditImage
+            onImageChange={(file) => {
+              console.log("Processed file received:", file);
               setImageFile(file);
-              return false;
-            }} // Prevent auto upload
-            onChange={handleFileChange} // Handle file changes
-            onRemove={() => setImageFile(null)} // Clear file on remove
-          >
-            <Button className="upload-text" icon={<UploadOutlined />}>
-              Upload Image
-            </Button>
-          </Upload>
+            }}
+            required
+          />
         </Form.Item>
+
+        {/* <Button
+          type="default"
+          style={{ marginBottom: "10px" }}
+          onClick={() => setSnippingToolActive(true)}
+        >
+          Select Image (Snipping Tool)
+        </Button> */}
+
         <Form.Item>
-          <Button type="primary" htmlType="submit" loading={loading}>
-            Submit
-          </Button>
+          <div className="edit-btns">
+            <Button type="primary" htmlType="submit" loading={loading}>
+              Submit
+            </Button>
+            <Button
+              type="default"
+              onClick={handleCancel}
+              className="cancel-btn"
+            >
+              Cancel
+            </Button>
+          </div>
         </Form.Item>
       </Form>
     </div>

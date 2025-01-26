@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Modal, Button, Upload, message } from "antd";
 import AvatarEditor from "react-avatar-editor";
-import { UploadOutlined } from "@ant-design/icons";
+import { DownCircleFilled, UploadOutlined } from "@ant-design/icons";
 
 const AvatarUpload = ({ visible = true, onClose, onUpload }) => {
   const [image, setImage] = useState(null);
@@ -49,11 +49,12 @@ const AvatarUpload = ({ visible = true, onClose, onUpload }) => {
 
   return (
     <Modal
+      className="avatar-upload"
       title="Crop Avatar"
       visible={visible}
       onCancel={onClose}
       footer={[
-        <Button key="cancel" onClick={onClose}>
+        <Button key="cancel" onClick={onClose} className="cancel-btn">
           Cancel
         </Button>,
         <Button key="save" type="primary" onClick={handleSave}>

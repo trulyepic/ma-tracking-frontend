@@ -1,13 +1,16 @@
 import { Button, Form, Input, message, Upload } from "antd";
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { updateUserItem } from "../../apis/api";
 import Item from "antd/es/list/Item";
 import { UploadOutlined } from "@ant-design/icons";
+import UploadEditImage from "./UploadEditImage";
 
-const EditItem = ({ existingItem }) => {
+const EditItem = () => {
   const navigate = useNavigate();
   const { id } = useParams(); // Get item ID from URL params
+  const location = useLocation();
+  const { existingItem, collectionId } = location.state || {};
 
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
@@ -40,7 +43,7 @@ const EditItem = ({ existingItem }) => {
     try {
       await updateUserItem(
         id,
-        { title, genre, content, longContent },
+        { title, genre, content, longContent, collectionId },
         imageFile
       );
 
@@ -54,6 +57,18 @@ const EditItem = ({ existingItem }) => {
     }
   };
 
+  // console.log("existing items in edit: ", existingItem);
+
+  const handleCancel = () => {
+    navigate(-1); // Navigate back to the previous page
+  };
+
+  console.log(
+    "Existing item = ",
+    existingItem,
+    "collectionId = ",
+    collectionId
+  );
   return (
     <div className="add-item-container">
       <span className="add-item-title">Edit item details</span>
@@ -112,27 +127,25 @@ const EditItem = ({ existingItem }) => {
         </Form.Item>
 
         <Form.Item label="Image File">
-          <Upload
-            listType="picture"
-            accept="image/*"
-            maxCount={1}
-            beforeUpload={(file) => {
-              setImageFile(file);
-              return false; // Prevent auto-upload
-            }}
-            onChange={handleFileChange}
-            onRemove={() => setImageFile(null)}
-          >
-            <Button className="upload-text" icon={<UploadOutlined />}>
-              Upload New Image
-            </Button>
-          </Upload>
+          <UploadEditImage
+            onImageChange={(file) => setImageFile(file)}
+            initialPreviewUrl={existingItem?.imageUrl}
+          />
         </Form.Item>
 
         <Form.Item>
-          <Button type="primary" htmlType="submit" loading={loading}>
-            Save Changes
-          </Button>
+          <div className="edit-btns">
+            <Button type="primary" htmlType="submit" loading={loading}>
+              Save Changes
+            </Button>
+            <Button
+              type="default"
+              onClick={handleCancel}
+              className="cancel-btn"
+            >
+              Cancel
+            </Button>
+          </div>
         </Form.Item>
       </Form>
     </div>

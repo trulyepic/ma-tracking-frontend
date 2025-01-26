@@ -1,0 +1,140 @@
+/* Styles for the FollowActions component */
+.follow-actions {
+  display: flex;
+  /* flex-direction: column; */
+  align-items: center;
+  gap: 30px;
+  cursor: pointer;
+}
+
+/* Default Follow button */
+
+.follow-btn,
+.unfollow-btn {
+  padding: 6px 16px;
+  border-radius: 5px;
+  font-size: 14px;
+  width: 100px;
+}
+
+.follow-btn {
+  background-color: #1890ff; /* Default Ant Design blue */
+  border-color: #1890ff;
+  color: white;
+}
+
+.follow-btn:hover {
+  background-color: #40a9ff;
+  border-color: #40a9ff;
+}
+
+.unfollow-btn {
+  background-color: #32a284;
+  border-color: #32a284;
+  color: #32a284;
+}
+
+.unfollow-btn:hover {
+  border-color: #28a078 !important;
+  color: #28a078 !important;
+}
+
+/* Followers count text */
+.followers-count {
+  font-size: 14px;
+  color: #cfcfcf;
+}
+
+.counts-container {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+
+.count-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.count {
+  font-size: 18px;
+  font-weight: bold;
+  /* color: #b30077; */
+  color: #5baff8;
+}
+
+.text {
+  font-size: 14px;
+}
+
+.modal-search {
+  margin-bottom: 15px;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.modal-item {
+  display: flex;
+  align-items: center;
+  /* justify-content: space-between; */
+  padding: 10px;
+  transition: background-color 0.3s;
+  gap: 5px;
+}
+
+.modal-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+/* Modal Styles */
+.ant-modal .ant-modal-content {
+  background-color: #101012 !important;
+  width: 380px;
+}
+
+.modal-follow-btn {
+  background-color: #1890ff !important;
+  border-color: #1890ff !important;
+  color: #ffffff !important;
+  transition: background-color 0.2s, border-color 0.2s !important;
+}
+
+.modal-follow-btn:hover {
+  background-color: #40a9ff !important;
+  border-color: #40a9ff !important;
+}
+
+.modal-unfollow-btn {
+  background-color: #28a078 !important;
+  border-color: #28a078 !important;
+  color: #32a284 !important;
+  /* font-size: 14px;
+    padding: 5px 15px;
+    border-radius: 8px; */
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.modal-unfollow-btn:hover {
+  background-color: #41edb4 !important;
+  border-color: #41edb4 !important;
+}
+
+.ant-modal-title {
+  background-color: #101012 !important;
+}
+
+.modal-username {
+  color: #ffffff;
+}
+
+.ant-modal-title {
+  color: #ffffff !important;
+}
+
+.anticon.anticon-close {
+  color: #ffffff !important;
+}

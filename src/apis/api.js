@@ -11,15 +11,6 @@ export const getItemByRating = async (rating) => {
   }));
 };
 
-// export const getCollectionsDetailWithPagination = async (page, limit) => {
-//   return new Array(limit).fill(null).map((_, index) => ({
-//     id: `item-page-${page}-${index}`,
-//     title: `Item Title Page ${page}-${index}`,
-//     genre: "Comedy",
-//     imageUrl: `https://via.placeholder.com/300?text=Series+Page+${page}-${index}`,
-//   }));
-// };
-
 export const getCollectionsDetailWithPagination = async (page, limit) => {
   const token = localStorage.getItem("authToken");
   if (!token) {
@@ -83,7 +74,7 @@ export const loginUser = async (userInfo) => {
 export const getUserDetails = async () => {
   try {
     const token = localStorage.getItem("authToken");
-    console.log("Token retrieved from localStorage:", token); // Debugging
+    // console.log("Token retrieved from localStorage:", token); // Debugging
 
     if (!token) {
       throw new Error("No authentication token found");
@@ -94,7 +85,7 @@ export const getUserDetails = async () => {
         Authorization: `Bearer ${token}`,
       },
     });
-
+    // console.log("response from api: userdetails: ", response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching user details:", error);
@@ -196,6 +187,8 @@ export const updateUserItem = async (itemId, itemDetails, imageFile) => {
     if (itemDetails.content) formData.append("content", itemDetails.content);
     if (itemDetails.longContent)
       formData.append("longContent", itemDetails.longContent);
+    if (itemDetails.collectionId)
+      formData.append("collectionId", itemDetails.collectionId);
     if (imageFile) formData.append("imageFile", imageFile);
 
     //make PUT request to update the user item
@@ -228,5 +221,174 @@ export const getGuestItemsWithPagination = async (page, limit) => {
   } catch (error) {
     console.log("Error fetching guest items: ", error);
     return { items: [], totalItems: 0 };
+  }
+};
+
+export const togglePublicView = async (publicView, collectionLink) => {
+  const token = localStorage.getItem("authToken");
+  if (!token) {
+    throw new Error("No authentication token found");
+  }
+
+  const response = await axios.put(`${API_BASE_URL}/toggle-public-view`, null, {
+    params: { publicView, collectionLink },
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return response.data;
+};
+
+export const getPublicGuestCollections = async () => {
+  const response = await axios.get(`${API_BASE_URL}/public-guest-collections`);
+  return response.data;
+};
+
+// export const getPublicCollections = async () => {
+//   try {
+//     const response = await axios.get(`${API_BASE_URL}/public-collections`);
+//     return response.data; // Returns an array of UserInfoDTO
+//   } catch (error) {
+//     console.error("Error fetching public collections:", error);
+//     throw error.response?.data || "Failed to fetch public collections";
+//   }
+// };
+
+export const getPublicCollections = async () => {
+  const token = localStorage.getItem("authToken");
+  if (!token) {
+    throw new Error("No authentication token found");
+  }
+
+  try {
+    const response = await axios.get(`${API_BASE_URL}/public-collections`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data; // Returns an array of UserInfoDTO
+  } catch (error) {
+    console.error("Error fetching public collections:", error);
+    throw error.response?.data || "Failed to fetch public collections";
+  }
+};
+
+export const getUserDetailsById = async (id) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/user/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching user details by ID:", error);
+    throw error.response?.data || "Failed to fetch user details";
+  }
+};
+
+export const getCollectionsDetailWithPaginationId = async (
+  page,
+  limit,
+  userId
+) => {
+  try {
+    const response = await axios.get(
+      `${API_BASE_URL}/user/${userId}/collections`,
+      {
+        params: { page, limit },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching collections:", error);
+    return { items: [], totalItems: 0 };
+  }
+};
+
+export const likeCollection = async (collectionOwnerId) => {
+  const token = localStorage.getItem("authToken");
+  if (!token) {
+    throw new Error("No authentication token found");
+  }
+
+  await axios.post(`${API_BASE_URL}/${collectionOwnerId}/like`, null, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};
+
+export const unlikeCollection = async (collectionOwnerId) => {
+  const token = localStorage.getItem("authToken");
+  if (!token) {
+    throw new Error("No authentication token found");
+  }
+
+  await axios.delete(`${API_BASE_URL}/${collectionOwnerId}/unlike`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};
+
+let publicToken = null;
+export const getPublicToken = async () => {
+  if (publicToken) return publicToken; // Use cached token if available
+  try {
+    const response = await axios.get(`${API_BASE_URL}/public-token`);
+    publicToken = `Bearer ${response.data}`; // Cache the token
+    // console.log("public response token: ", response);
+    console.log("public response publicToken: ", publicToken);
+    return publicToken;
+  } catch (error) {
+    console.error("Error fetching public token:", error);
+    throw new Error("Failed to fetch public token");
+  }
+};
+
+export const updateUserInfo = async (userInfo) => {
+  try {
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      throw new Error("No authentication token found");
+    }
+
+    const response = await axios.put(
+      `${API_BASE_URL}/update-user-info`,
+      userInfo,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error updating user info:", error);
+    throw error;
+  }
+};
+
+export const searchPublicCollections = async (query) => {
+  try {
+    const response = await axios.get(
+      `${API_BASE_URL}/search-public-collections`,
+      {
+        params: { query },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error("Error searching public collections:", error);
+    throw error.response?.data || "Failed to search public collections";
+  }
+};
+
+export const searchUserCollections = async (userId, query) => {
+  try {
+    const token = localStorage.getItem("authToken");
+    const response = await axios.get(`${API_BASE_URL}/search-collections`, {
+      params: { userId, query },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error searching collections:", error);
+    return [];
   }
 };

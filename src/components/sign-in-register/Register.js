@@ -26,16 +26,29 @@ const Register = () => {
       console.log("No avatar image selected.");
     }
 
+    // try {
+    //   const response = await registerUser(formData);
+    //   setMessageText(response.message || "User registered successfully!");
+    //   navigate("/signin");
+    // } catch (error) {
+    //   setMessageText(error.message);
+    // }
     try {
       const response = await registerUser(formData);
       setMessageText(response.message || "User registered successfully!");
+      message.success("Registration Successful!");
       navigate("/signin");
     } catch (error) {
-      setMessageText(error.message);
+      if (error.error) {
+        setMessageText(error.error); // Handle structured error messages
+      } else {
+        setMessageText("An unexpected error occurred. Please try again.");
+      }
     }
   };
 
   //   console.log("avaterImage: ", avatarImage);
+  console.log("message text: ", messageText);
   return (
     <main>
       <div className="register-container">
@@ -51,7 +64,10 @@ const Register = () => {
           <Form.Item
             label="E-mail address"
             name="userEmail"
-            rules={[{ required: true, message: "Please input your email!" }]}
+            rules={[
+              { required: true, message: "Please input your email!" },
+              { type: "email" },
+            ]}
           >
             <Input className="reg-input" />
           </Form.Item>
@@ -75,7 +91,7 @@ const Register = () => {
             </Button>
           </Form.Item>
         </Form>
-        {messageText && <p>{messageText}</p>}
+        {messageText && <p className="register-notice">{messageText}</p>}
 
         {/* {isAvatarModalVisible && (
           <AvatarUpload

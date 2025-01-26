@@ -10,6 +10,7 @@ import {
 } from "@ant-design/icons";
 import { getUserDetails, uploadAvatar } from "../../apis/api";
 import AvatarUpload from "../sign-in-register/AvatarUpload";
+import myLogo from "../../components/images/logo/myLogo.png";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -49,47 +50,58 @@ const Header = () => {
     navigate("/signin");
   };
 
-  const menu = isAuthenticated ? (
-    <Menu>
-      <Menu.Item
-        key="settings"
-        icon={<SettingOutlined />}
-        onClick={() => navigate("/settings")}
-      >
-        Settings
-      </Menu.Item>
-      <Menu.Item
-        key="upload-avatar"
-        icon={<UploadOutlined />}
-        onClick={() => setAvatarModalVisible(true)}
-      >
-        Upload/Update Avatar
-      </Menu.Item>
-      <Menu.Item key="logout" icon={<LogoutOutlined />} onClick={handleLogout}>
-        Log Out
-      </Menu.Item>
-    </Menu>
-  ) : (
-    <Menu>
-      <Menu.Item key="signin" onClick={() => navigate("/signin")}>
-        Sign In
-      </Menu.Item>
-      <Menu.Item key="register" onClick={() => navigate("/register")}>
-        Register
-      </Menu.Item>
-    </Menu>
-  );
+  const menuItems = isAuthenticated
+    ? [
+        {
+          key: "settings",
+          label: "Settings",
+          icon: <SettingOutlined />,
+          onClick: () => navigate("/settings"),
+        },
+        {
+          key: "upload-avatar",
+          label: "Upload/Update Avatar",
+          icon: <UploadOutlined />,
+          onClick: () => setAvatarModalVisible(true),
+        },
+        {
+          key: "logout",
+          label: "Log Out",
+          icon: <LogoutOutlined />,
+          onClick: handleLogout,
+        },
+      ]
+    : [
+        {
+          key: "signin",
+          label: "Sign In",
+          onClick: () => navigate("/signin"),
+        },
+        {
+          key: "register",
+          label: "Register",
+          onClick: () => navigate("/register"),
+        },
+      ];
+
+  const handleLogoClick = () => {
+    navigate("/");
+  };
 
   return (
     <header className="app-header">
+      <div className="logo-container" onClick={handleLogoClick}>
+        <img src={myLogo} alt="Logo" className="app-logo" />
+        <span className="app-title">Ex-hibit</span>
+      </div>
       <div>
         <nav className="app-header-nav">
           <Link to="/"> Home</Link>
-          <Link to="/UserListPage">List of Collections</Link>
+          <Link to="/list-collections">Public Collections</Link>
         </nav>
       </div>
       <div className="app-header-user-icon">
-        <Dropdown overlay={menu} trigger={["click"]}>
+        <Dropdown menu={{ items: menuItems }} trigger={["click"]}>
           {isAuthenticated && userDetails?.avatarImageLink ? (
             <Avatar
               src={`${userDetails.avatarImageLink}`}
@@ -101,7 +113,7 @@ const Header = () => {
               }}
             />
           ) : (
-            <Avatar icon={<UserOutlined />} size={40} />
+            <Avatar className="avatar" icon={<UserOutlined />} size={40} />
           )}
           {/* <UserOutlined
             style={{ fontSize: "24px", cursor: "pointer", color: "#ffffff" }}
@@ -117,8 +129,9 @@ const Header = () => {
               const formData = new FormData();
               formData.append("avatarImage", croppedFile);
 
-              const response = await uploadAvatar(formData);
-              message.success(response);
+              // const response = await uploadAvatar(formData);
+              await uploadAvatar(formData);
+              message.success("Avater successfully uploaded/updated!");
               getUserDetails().then((details) => setUserDetails(details)); // Refresh user details
             } catch {
               message.error("Failed to update avatar.");

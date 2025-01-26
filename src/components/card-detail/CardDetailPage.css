@@ -3,10 +3,13 @@
   flex-direction: column;
   justify-content: space-between;
   border-radius: 8px !important;
-  height: 400px;
+  /* height: 400px; */
   padding: 20px;
-  max-width: 400px;
-  margin: 0 auto;
+  max-width: 500px;
+  margin: 15px auto;
+  position: relative; /* Allows proper stacking context */
+  background-color: #1a1a1d;
+  z-index: 2;
 }
 
 .card-title {
@@ -17,6 +20,7 @@
 
 .card-cover {
   border-radius: 8px !important;
+  cursor: pointer;
 }
 
 .card-content {
@@ -29,6 +33,18 @@
   color: #ffffff !important;
 }
 
+.disqus-section {
+  margin-top: 40px;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 800px;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  padding: 20px;
+}
+
+/* antd section */
 .ant-card-body {
   background-color: #1a1a1d !important;
 }
@@ -43,4 +59,13 @@
 
 .ant-card {
   background: transparent !important;
+}
+
+.card-detail-modal .ant-modal-content {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.card-detail-modal .anticon {
+  color: #ffffff !important;
 }
