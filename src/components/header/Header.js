@@ -50,36 +50,39 @@ const Header = () => {
     navigate("/signin");
   };
 
-  const menu = isAuthenticated ? (
-    <Menu>
-      <Menu.Item
-        key="settings"
-        icon={<SettingOutlined />}
-        // onClick={() => navigate("/settings")}
-      >
-        Settings
-      </Menu.Item>
-      <Menu.Item
-        key="upload-avatar"
-        icon={<UploadOutlined />}
-        onClick={() => setAvatarModalVisible(true)}
-      >
-        Upload/Update Avatar
-      </Menu.Item>
-      <Menu.Item key="logout" icon={<LogoutOutlined />} onClick={handleLogout}>
-        Log Out
-      </Menu.Item>
-    </Menu>
-  ) : (
-    <Menu>
-      <Menu.Item key="signin" onClick={() => navigate("/signin")}>
-        Sign In
-      </Menu.Item>
-      <Menu.Item key="register" onClick={() => navigate("/register")}>
-        Register
-      </Menu.Item>
-    </Menu>
-  );
+  const menuItems = isAuthenticated
+    ? [
+        {
+          key: "settings",
+          label: "Settings",
+          icon: <SettingOutlined />,
+          onClick: () => navigate("/settings"),
+        },
+        {
+          key: "upload-avatar",
+          label: "Upload/Update Avatar",
+          icon: <UploadOutlined />,
+          onClick: () => setAvatarModalVisible(true),
+        },
+        {
+          key: "logout",
+          label: "Log Out",
+          icon: <LogoutOutlined />,
+          onClick: handleLogout,
+        },
+      ]
+    : [
+        {
+          key: "signin",
+          label: "Sign In",
+          onClick: () => navigate("/signin"),
+        },
+        {
+          key: "register",
+          label: "Register",
+          onClick: () => navigate("/register"),
+        },
+      ];
 
   const handleLogoClick = () => {
     navigate("/");
@@ -98,7 +101,7 @@ const Header = () => {
         </nav>
       </div>
       <div className="app-header-user-icon">
-        <Dropdown overlay={menu} trigger={["click"]}>
+        <Dropdown menu={{ items: menuItems }} trigger={["click"]}>
           {isAuthenticated && userDetails?.avatarImageLink ? (
             <Avatar
               src={`${userDetails.avatarImageLink}`}

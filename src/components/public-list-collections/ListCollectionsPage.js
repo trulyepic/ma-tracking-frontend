@@ -6,6 +6,7 @@ import {
   getUserDetails,
   likeCollection,
   likeItem,
+  searchPublicCollections,
   unlikeCollection,
   unlikeItem,
 } from "../../apis/api";
@@ -14,7 +15,10 @@ import "./ListCollectionsPage.css";
 import moment from "moment";
 import { HeartFilled, HeartOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-import { Helmet } from "react-helmet";
+// import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
+import CookieConsent from "../cookies/CookieConsent";
+import Search from "antd/es/input/Search";
 
 const ListCollectionsPage = () => {
   const navigate = useNavigate();
@@ -24,6 +28,8 @@ const ListCollectionsPage = () => {
   const [currentUserId, setCurrentUserId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
+  const [searchResults, setSearchResults] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const fetchUserDetails = async () => {
@@ -52,25 +58,11 @@ const ListCollectionsPage = () => {
         //   localStorage.setItem("authToken", token);
         // }
         const token = localStorage.getItem("authToken");
-        console.log("token in list: ", token);
+        // console.log("token in list: ", token);
         const users = token
           ? await getPublicCollections()
           : await getPublicGuestCollections();
-        // const users = await getPublicCollections();
-        // setPublicUsers(users);
-        // setPublicUsers(
-        //   users.map((user) => ({ ...user, likes: user.likes || 0 }))
-        // ); // Ensure likes field exists
 
-        // Ensure `likesCount` exists and is accurate
-        // setPublicUsers(
-        //   users.map((user) => ({
-        //     ...user,
-        //     likesCount: user.likesCount || 0,
-        //     liked: token ? user.liked : false, // Guests cannot "like"
-        //     isOwner: token && currentUserId === user.id,
-        //   }))
-        // );
         const mappedUsers = users.map((user) => ({
           ...user,
           likesCount: user.likesCount || 0,
@@ -146,6 +138,23 @@ const ListCollectionsPage = () => {
     return moment(timestamp).fromNow();
   };
 
+  const handleSearch = async (value) => {
+    setSearchQuery(value);
+
+    if (!value) {
+      setSearchResults([]);
+      return;
+    }
+
+    try {
+      const results = await searchPublicCollections(value);
+      setSearchResults(results);
+    } catch (error) {
+      console.error("Error searching public collections:", error);
+      message.error("Failed to search public collections.");
+    }
+  };
+
   // Navigate with isOwner
   const navigateToUserHomePage = (user) => {
     // console.log("user in list collection: ", user);
@@ -163,8 +172,12 @@ const ListCollectionsPage = () => {
   const endIndex = startIndex + pageSize;
   const paginatedUsers = publicUsers.slice(startIndex, endIndex);
 
+  const displayUsers = searchQuery ? searchResults : paginatedUsers;
+
+  // console.log("paginatedUsers: ", paginatedUsers);
   return (
     <div className="list-collections-page">
+      <CookieConsent />
       <Helmet>
         <title>Public Collections | Ex-hibit</title>
         <meta
@@ -185,20 +198,25 @@ const ListCollectionsPage = () => {
         <meta property="og:type" content="website" />
         <meta property="og:url" content="" />
       </Helmet>
-      <h1 className="list-collection-header">Public Collections</h1>
+      {/* <h1 className="list-collection-header">Public Collections</h1> */}
+      <div className="list-collection-search-container">
+        <Search
+          className="list-collection-search"
+          size="large"
+          placeholder="Search users..."
+          allowClear
+          onSearch={handleSearch}
+        />
+      </div>
       <List
         loading={loading}
         itemLayout="horizontal"
-        dataSource={paginatedUsers}
+        dataSource={displayUsers}
         renderItem={(user) => (
           <List.Item className="list-card">
             <List.Item.Meta
               avatar={
-                <Avatar
-                  src={user.avatarImageLink}
-                  size="large"
-                  shape="square"
-                />
+                <Avatar src={user.avatarImageLink} size={60} shape="square" />
               }
               title={
                 <span
@@ -214,29 +232,37 @@ const ListCollectionsPage = () => {
               }
               description={
                 <div className="list-card-content">
-                  <span>{`Created: ${new Date(
-                    user.publicViewCreatedDate
-                  ).toLocaleString()}`}</span>
-                  <span className="time-ago">
-                    {formatTimeAgo(user.publicViewCreatedDate)}
-                  </span>
+                  <div className="created-section">
+                    <span>{`Created: ${new Date(
+                      user.publicViewCreatedDate
+                    ).toLocaleString()}`}</span>
+
+                    <span className="time-ago">
+                      {formatTimeAgo(user.publicViewCreatedDate)}
+                    </span>
+                  </div>
                 </div>
               }
             />
             <div className="like-section">
-              <Button
-                type="text"
-                icon={
-                  user.liked ? (
-                    <HeartFilled style={{ color: "red" }} />
-                  ) : (
-                    <HeartOutlined style={{ color: "white" }} />
-                  )
-                }
-                onClick={() => handleLikeToggle(user)}
-                // disabled={processingLikes[user.id]} // Disable while processing
-              />
-              <span>{user.likesCount || 0}</span>
+              <div className="likes-row">
+                <Button
+                  type="text"
+                  icon={
+                    user.liked ? (
+                      <HeartFilled style={{ color: "red" }} />
+                    ) : (
+                      <HeartOutlined style={{ color: "white" }} />
+                    )
+                  }
+                  onClick={() => handleLikeToggle(user)}
+                  // disabled={processingLikes[user.id]} // Disable while processing
+                />
+                <span>{user.likesCount || 0}</span>
+              </div>
+              <div className="follower-count">
+                {`Followers: ${user.followersCount || 0}`}
+              </div>
             </div>
           </List.Item>
         )}

@@ -2,7 +2,12 @@ import React, { useEffect, useRef, useState } from "react";
 import "./UserHomePage.css";
 import { Button, Divider, Input, message, Modal, Switch } from "antd";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { deleteUserItem, getUserDetails, togglePublicView } from "../apis/api";
+import {
+  deleteUserItem,
+  getUserDetails,
+  searchUserCollections,
+  togglePublicView,
+} from "../apis/api";
 import UserCollectionGrid from "./item-holder/UserCollectionGrid";
 import axios from "axios";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
@@ -16,6 +21,8 @@ import {
   getGuestCollectionsWithPaginationMa,
 } from "../apis/apiCollection";
 import { DownOutlined, UpOutlined } from "@ant-design/icons";
+import CookieConsent from "./cookies/CookieConsent";
+import FollowActions from "../follow/FollowActions";
 
 const { Search } = Input;
 
@@ -63,8 +70,10 @@ const CollectionHomePage = () => {
   const [collections, setCollections] = useState([]);
   const [userId, setUserId] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
+  // const [searchQuery, setSearchQuery] = useState("");
+  // const [searchResults, setSearchResults] = useState([]);
 
-  const ITEMS_PER_PAGE = 20; // Define items per page (matches API limit)
+  const ITEMS_PER_PAGE = 10; // Define items per page (matches API limit)
 
   useEffect(() => {
     const fetchUserName = async () => {
@@ -117,7 +126,7 @@ const CollectionHomePage = () => {
         );
       } else if (!isCurrentUser) {
         // Logged-in user viewing another user's collections
-        console.log("!isCurrentUser = ", !isCurrentUser);
+        // console.log("!isCurrentUser = ", !isCurrentUser);
         const response = await getCollectionsByUserId(id, page, ITEMS_PER_PAGE);
         collectionData = response.collections || []; // Extract collections
       } else {
@@ -195,7 +204,7 @@ const CollectionHomePage = () => {
           // setUserName(userDetails.name);
           //check if the athenticated user matches the collection owner
           setIsOwner(userDetails.id === Number(id));
-          console.log("!isGuest = ", !isGuest);
+          // console.log("!isGuest = ", !isGuest);
         }
         // setOwnerId(userDetails.id);
       } catch (error) {
@@ -212,7 +221,7 @@ const CollectionHomePage = () => {
 
   useEffect(() => {
     const initializePage = async () => {
-      console.log("initializing user and fetching data...");
+      // console.log("initializing user and fetching data...");
       await fetchUserName();
     };
     if (!isGuest) {
@@ -253,10 +262,12 @@ const CollectionHomePage = () => {
   const filteredCollections = collections.map((collection) => ({
     ...collection,
     items: selectedSort
-      ? collection.items.filter((item) =>
-          item.genre.toLowerCase().includes(selectedSort.toLowerCase())
-        )
-      : collection.items,
+      ? collection.items
+          .filter((item) =>
+            item.genre.toLowerCase().includes(selectedSort.toLowerCase())
+          )
+          .sort((a, b) => a.title.localeCompare(b.title)) // sort alphabetically
+      : collection.items.sort((a, b) => a.title.localeCompare(b.title)), // Default sort
   }));
 
   const uniqueGenres = Array.from(
@@ -418,6 +429,34 @@ const CollectionHomePage = () => {
     });
   };
 
+  // const handleSearch = async (value) => {
+  //   setSearchQuery(value);
+  //   if (!value) {
+  //     setSearchResults([]);
+  //     return;
+  //   }
+
+  //   try {
+  //     const results = await searchUserCollections(id, value);
+  //     setSearchResults(results);
+  //   } catch (error) {
+  //     console.error("Error searching collections:", error);
+  //     message.error("Failed to search collections.");
+  //   }
+  // };
+  // const handleSearch = (query) => {
+  //   setSearchQuery(query);
+  //   if (!query) {
+  //     setFilteredCollections(collections);
+  //   } else {
+  //     const lowerQuery = query.toLowerCase();
+  //     const filtered = collections.filter((collection) =>
+  //       collection.name.toLowerCase().includes(lowerQuery)
+  //     );
+  //     setFilteredCollections(filtered);
+  //   }
+  // };
+
   // console.log("has more  : ", hasMore);
   // console.log("user homepage state: ", state);
   // console.log("isGuest in home: ", isGuest);
@@ -428,6 +467,7 @@ const CollectionHomePage = () => {
   return (
     <div>
       <div className="user-home-page-container">
+        <CookieConsent />
         {isGuest && (
           <div className="user-home-main-header">
             <h1>Welcome to Ex-hibit.</h1>
@@ -443,12 +483,17 @@ const CollectionHomePage = () => {
               : `${userName}'s Collections`}
           </h1>
           <div className="user-home-page-search-dropdown">
-            <Search
+            <FollowActions userId={id} />
+            {/* <Button>follow</Button>
+            <span>following</span>
+            <span>followers</span> */}
+            {/* <Search
               className="user-home-search-input"
               size="large"
               placeholder="Search collections"
               allowClear
-            />
+              onSearch={handleSearch}
+            /> */}
 
             <div className="right-controls">
               <div style={{ marginBottom: "20px" }}>
@@ -493,7 +538,6 @@ const CollectionHomePage = () => {
             </div>
           </div>
         </header>
-
         {/* Render collections dynamically */}
         {filteredCollections.map((collection) => (
           <div key={collection.id} className="collection-section">

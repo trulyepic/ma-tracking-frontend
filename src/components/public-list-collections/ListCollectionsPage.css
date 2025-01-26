@@ -49,8 +49,15 @@
 .list-card .list-card-content {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  /* align-items: center; */
+  align-items: flex-start;
   width: 100%;
+}
+
+.created-section {
+  display: flex;
+  flex-direction: column;
+  /* gap: 3px; */
 }
 
 .list-card .list-card-content span {
@@ -60,12 +67,19 @@
 .list-card .time-ago {
   color: rgb(81, 81, 81) !important;
   font-size: 0.9em;
-  text-align: right;
   padding-right: 10px !important;
 }
 
+/* .list-card-content .time-ago {
+  font-size: 0.9em;
+  color: rgb(81, 81, 81);
+  text-align: left; 
+  margin-top: 2px; 
+} */
+
 .like-section {
   display: flex;
+  flex-direction: column;
   align-items: center;
   padding-right: 10px;
   gap: 5px;
@@ -73,9 +87,32 @@
   color: #ffffff;
 }
 
+.like-section .follower-count {
+  margin-top: 5px;
+  color: #adadad;
+}
+
 .list-card .ant-list-item-meta-avatar {
   margin-left: 10px; /* Adds space to the left of the avatar */
   margin-right: 15px; /* Adds space between the avatar and the rest of the content */
+}
+
+.list-collection-search-container {
+  display: flex;
+  justify-content: center;
+}
+
+.list-collection-search {
+  width: 300px;
+  margin-bottom: 20px;
+}
+
+.list-collection-search .anticon {
+  color: #ffffff !important;
+}
+
+.list-collection-search .anticon:hover {
+  color: #007bff !important;
 }
 
 .ant-pagination {

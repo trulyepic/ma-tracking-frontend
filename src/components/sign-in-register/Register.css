@@ -58,6 +58,26 @@ main {
   color: #fa5f5f;
 }
 
+.modal-item {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  padding: 10px 0 !important;
+}
+
+.modal-item:hover {
+  background-color: #1e1e1f;
+  cursor: pointer;
+}
+
+.avatar-upload .anticon {
+  color: #ffffff !important;
+}
+
+.avatar-upload .ant-btn-color-default {
+  color: #ffffff !important;
+}
+
 /* antd override */
 
 .ant-input-outlined.ant-input-status-error:not(.ant-input-disabled) {
@@ -82,6 +102,25 @@ main {
 
 .ant-form-item-label > label {
   color: #ffffff !important;
+}
+
+/* .ant-btn-color-default {
+  color: #ffffff !important;
+} */
+
+.ant-btn-color-default:hover {
+  color: #007bff !important;
+}
+
+.ant-modal-content {
+  max-height: 500px !important;
+  overflow: hidden !important;
+}
+
+.ant-modal-body {
+  max-height: 500px !important;
+  overflow-y: auto !important;
+  padding: 0 16px !important;
 }
 
 /* Adjust positioning for shorter screens */

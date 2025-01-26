@@ -10,6 +10,8 @@ import ListCollectionsPage from "../components/public-list-collections/ListColle
 import UserHomePage from "../components/UserHomePage";
 import CollectionHomePage from "../components/CollectionHomePage";
 import AddCollection from "../components/add-item/AddCollection";
+import Settings from "../components/settings/Settings";
+import ProfilePage from "../components/user-profile/ProfilePage";
 
 const AppRoutes = () => {
   return (
@@ -26,6 +28,8 @@ const AppRoutes = () => {
       <Route path="/user-homepage/:id" element={<UserHomePage />} />
       <Route path="/collection-homepage/:id" element={<CollectionHomePage />} />
       <Route path="/addCollection" element={<AddCollection />} />
+      <Route path="/settings" element={<Settings />} />
+      <Route path="/user-profile/:id" element={<ProfilePage />} />
     </Routes>
   );
 };

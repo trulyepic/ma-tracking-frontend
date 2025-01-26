@@ -11,15 +11,6 @@ export const getItemByRating = async (rating) => {
   }));
 };
 
-// export const getCollectionsDetailWithPagination = async (page, limit) => {
-//   return new Array(limit).fill(null).map((_, index) => ({
-//     id: `item-page-${page}-${index}`,
-//     title: `Item Title Page ${page}-${index}`,
-//     genre: "Comedy",
-//     imageUrl: `https://via.placeholder.com/300?text=Series+Page+${page}-${index}`,
-//   }));
-// };
-
 export const getCollectionsDetailWithPagination = async (page, limit) => {
   const token = localStorage.getItem("authToken");
   if (!token) {
@@ -343,5 +334,61 @@ export const getPublicToken = async () => {
   } catch (error) {
     console.error("Error fetching public token:", error);
     throw new Error("Failed to fetch public token");
+  }
+};
+
+export const updateUserInfo = async (userInfo) => {
+  try {
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      throw new Error("No authentication token found");
+    }
+
+    const response = await axios.put(
+      `${API_BASE_URL}/update-user-info`,
+      userInfo,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error updating user info:", error);
+    throw error;
+  }
+};
+
+export const searchPublicCollections = async (query) => {
+  try {
+    const response = await axios.get(
+      `${API_BASE_URL}/search-public-collections`,
+      {
+        params: { query },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error("Error searching public collections:", error);
+    throw error.response?.data || "Failed to search public collections";
+  }
+};
+
+export const searchUserCollections = async (userId, query) => {
+  try {
+    const token = localStorage.getItem("authToken");
+    const response = await axios.get(`${API_BASE_URL}/search-collections`, {
+      params: { userId, query },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error searching collections:", error);
+    return [];
   }
 };
