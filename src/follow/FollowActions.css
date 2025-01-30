@@ -1,7 +1,5 @@
-/* Styles for the FollowActions component */
 .follow-actions {
   display: flex;
-  /* flex-direction: column; */
   align-items: center;
   gap: 30px;
   cursor: pointer;
@@ -10,8 +8,6 @@
 .follow-actions:disabled {
   color: #ffffff !important;
 }
-
-/* Default Follow button */
 
 .follow-btn,
 .unfollow-btn {
@@ -22,7 +18,7 @@
 }
 
 .follow-btn {
-  background-color: #1890ff; /* Default Ant Design blue */
+  background-color: #1890ff;
   border-color: #1890ff;
   color: white;
 }
@@ -43,7 +39,6 @@
   color: #28a078 !important;
 }
 
-/* Followers count text */
 .followers-count {
   font-size: 14px;
   color: #cfcfcf;
@@ -64,7 +59,6 @@
 .count {
   font-size: 18px;
   font-weight: bold;
-  /* color: #b30077; */
   color: #5baff8;
 }
 
@@ -81,7 +75,6 @@
 .modal-item {
   display: flex;
   align-items: center;
-  /* justify-content: space-between; */
   padding: 10px;
   transition: background-color 0.3s;
   gap: 5px;
@@ -94,10 +87,20 @@
   margin-right: 10px;
 }
 
-/* Modal Styles */
-.ant-modal .ant-modal-content {
+.modal-followers.ant-modal .ant-modal-content {
   background-color: #101012 !important;
   width: 380px;
+}
+
+.ant-modal-content .infinite-scroll-container {
+  max-height: 500px !important;
+  overflow: hidden !important;
+}
+
+.ant-modal-body .infinite-scroll-container {
+  max-height: 500px !important;
+  overflow-y: auto !important;
+  /* padding: 0 16px !important; */
 }
 
 .modal-follow-btn {
@@ -116,9 +119,6 @@
   background-color: #28a078 !important;
   border-color: #28a078 !important;
   color: #32a284 !important;
-  /* font-size: 14px;
-    padding: 5px 15px;
-    border-radius: 8px; */
   transition: background-color 0.2s, border-color 0.2s;
 }
 

@@ -184,7 +184,7 @@ main {
   color: #007bff !important;
 }
 
-.ant-modal-content {
+/* .ant-modal-content {
   max-height: 500px !important;
   overflow: hidden !important;
 }
@@ -193,7 +193,7 @@ main {
   max-height: 500px !important;
   overflow-y: auto !important;
   padding: 0 16px !important;
-}
+} */
 
 .ant-divider-horizontal.ant-divider-with-text {
   color: #9f9f9f !important;
