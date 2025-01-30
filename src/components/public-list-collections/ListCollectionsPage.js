@@ -163,6 +163,7 @@ const ListCollectionsPage = () => {
         listUserDetails: user,
         isGuest: !localStorage.getItem("authToken"),
         isOwner: currentUserId === user.id, // Pass ownership
+        forceCollapse: true,
       },
     });
   };

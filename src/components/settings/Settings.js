@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Button, Input, Avatar, message } from "antd";
+import { Button, Input, Avatar, message, Progress } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import AvatarUpload from "../sign-in-register/AvatarUpload"; // Import your existing AvatarUpload component
 import { getUserDetails, updateUserInfo, uploadAvatar } from "../../apis/api"; // Reuse the existing API functions
 import "./Settings.css"; // Import the stylesheet
+import {
+  checkUsernameAvailabilityWrapper,
+  isRestrictedUsername,
+  passwordValidator,
+  validatePassword,
+} from "../util/helper";
 
 const Settings = () => {
   const [userDetails, setUserDetails] = useState(null);
@@ -14,6 +20,14 @@ const Settings = () => {
     new: "",
     confirm: "",
   });
+  const [passwordStrength, setPasswordStrength] = useState(0);
+  const [requirements, setRequirements] = useState({
+    length: false,
+    numberAndLetter: false,
+    notUserID: false,
+  });
+  const [usernameError, setUsernameError] = useState("");
+  const [isUsernameAvailable, setIsUsernameAvailable] = useState(null);
 
   const fetchUserDetails = async () => {
     try {
@@ -28,6 +42,12 @@ const Settings = () => {
   useEffect(() => {
     fetchUserDetails();
   }, []);
+
+  const handleNewPasswordChange = (password) => {
+    const { requirements, strength } = validatePassword(password, username);
+    setRequirements(requirements);
+    setPasswordStrength(strength);
+  };
 
   const handleAvatarUpload = async (croppedFile) => {
     try {
@@ -62,14 +82,37 @@ const Settings = () => {
         return;
       }
       const updateInfo = {};
-      if (username) updateInfo.name = username;
+      if (username) {
+        if (isRestrictedUsername(username)) {
+          setUsernameError("Restricted username. Please choose another.");
+          return;
+        }
+        if (isUsernameAvailable === false) {
+          message.error("Username is already taken.");
+          return;
+        }
+        updateInfo.name = username;
+      }
+
       if (password.new) {
+        const { isValid, error } = passwordValidator(password.new, username);
+        if (!isValid) {
+          message.error(error);
+          return;
+        }
         updateInfo.password = password.new;
         updateInfo.currentPassword = password.current;
       }
-      console.log("updateInfo: ", updateInfo);
+      // console.log("updateInfo: ", updateInfo);
       await updateUserInfo(updateInfo);
       message.success("User details updated successfully!");
+
+      // Clear password fields after successful update
+      setPassword({
+        current: "",
+        new: "",
+        confirm: "",
+      });
     } catch (error) {
       if (
         error.response?.status === 400 &&
@@ -82,6 +125,21 @@ const Settings = () => {
         message.error("Failed to update user info.");
       }
     }
+  };
+  const handleUsernameChange = (e) => {
+    setUsername(e.target.value);
+    setUsernameError("");
+  };
+  const handleUsernameBLur = async () => {
+    if (isRestrictedUsername(username)) {
+      setUsernameError("Restricted username. Please choose another.");
+      return;
+    }
+    await checkUsernameAvailabilityWrapper(
+      username,
+      setIsUsernameAvailable,
+      setUsernameError
+    );
   };
 
   //   console.log("userDetails: ", userDetails);
@@ -116,8 +174,11 @@ const Settings = () => {
           placeholder="Enter new username"
           prefix={<UserOutlined />}
           value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          // onChange={(e) => setUsername(e.target.value)}
+          onChange={handleUsernameChange}
+          onBlur={handleUsernameBLur}
         />
+        {usernameError && <p className="error-text">{usernameError}</p>}
       </div>
 
       {/* Change Password Section */}
@@ -135,8 +196,24 @@ const Settings = () => {
           placeholder="New password"
           className="password-input"
           value={password.new}
-          onChange={(e) => setPassword({ ...password, new: e.target.value })}
+          onChange={(e) => {
+            setPassword({ ...password, new: e.target.value });
+            handleNewPasswordChange(e.target.value);
+          }}
         />
+
+        <Progress percent={passwordStrength} showInfo={false} />
+        <ul className="password-requirements">
+          <li className={requirements.length ? "met" : ""}>
+            Must be 8-32 characters
+          </li>
+          <li className={requirements.numberAndLetter ? "met" : ""}>
+            Must contain at least 1 number and 1 letter
+          </li>
+          <li className={requirements.notUserID ? "met" : ""}>
+            Must not match username
+          </li>
+        </ul>
         <Input.Password
           placeholder="Confirm new password"
           className="password-input"

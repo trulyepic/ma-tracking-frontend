@@ -7,6 +7,7 @@ import {
   getCurrentUserFollowingCount,
   getFollowersCount,
   getFollowersList,
+  getFollowingCount,
   getFollowingList,
   getFollowStatus,
   unfollowUser,
@@ -15,8 +16,9 @@ import { Avatar, Button, Input, message, Modal, Spin, Tooltip } from "antd";
 import "./FollowActions.css";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Search from "antd/es/transfer/search";
+import { formatFollowNumber } from "../components/util/helper";
 
-const FollowActions = ({ userId }) => {
+const FollowActions = ({ userId, isGuest }) => {
   const [isFollowing, setIsFollowing] = useState(false);
   const [followersCount, setFollowersCount] = useState(0);
   const [followingCount, setFollowingCount] = useState(0);
@@ -39,8 +41,11 @@ const FollowActions = ({ userId }) => {
         const count = await getFollowersCount(userId);
         setFollowersCount(count);
 
-        const loggedInFollowingCount = await getCurrentUserFollowingCount();
-        setFollowingCount(loggedInFollowingCount);
+        // const loggedInFollowingCount = await getCurrentUserFollowingCount();
+        // setFollowingCount(loggedInFollowingCount);
+
+        const followingCount = await getFollowingCount(userId);
+        setFollowingCount(followingCount);
 
         const followingStatus = await getFollowStatus(userId);
         setIsFollowing(followingStatus);
@@ -65,10 +70,20 @@ const FollowActions = ({ userId }) => {
 
   const fetchFollowers = async (page) => {
     try {
+      console.log(`Fetching followers - Page: ${page}`);
+
       const data = await fetchPaginatedFollowers(userId, page, ITEMS_PER_PAGE);
       console.log("Followers API Response:", data); // Debug API response
-      setFollowersList((prev) => [...prev, ...data.followers]); // Use `followers`
-      setHasMoreFollowers(data.hasMore); // Use `hasMore`
+
+      if (data.followers.length > 0) {
+        setFollowersList((prev) => [...prev, ...data.followers]);
+
+        const more = data.hasMore;
+        console.log(`Setting hasMoreFollowers to: ${more}`);
+        setHasMoreFollowers(more);
+      } else {
+        setHasMoreFollowers(false);
+      }
     } catch (error) {
       message.error("Failed to fetch followers.");
       setHasMoreFollowers(false);
@@ -114,6 +129,7 @@ const FollowActions = ({ userId }) => {
     setFollowersList([]);
     setFollowersPage(1);
     fetchFollowers(1);
+    setHasMoreFollowers(true);
   };
 
   const closeFollowersModal = () => {
@@ -131,51 +147,81 @@ const FollowActions = ({ userId }) => {
     setShowFollowingModal(false);
   };
 
-  //   console.log("followersList: ", followersList);
+  console.log("followersList: ", followersList);
+  console.log("hasmore: ", hasMoreFollowers);
   return (
     <div className="follow-actions">
-      <Button
-        className={isFollowing ? "unfollow-btn" : "follow-btn"}
-        onClick={isFollowing ? handleUnfollow : handleFollow}
-      >
-        {isFollowing ? "Unfollow" : "Follow"}
-      </Button>
+      <Tooltip title={isGuest ? "Register or Login to follow" : ""}>
+        <Button
+          disabled={isGuest}
+          className={isFollowing ? "unfollow-btn" : "follow-btn"}
+          onClick={isFollowing ? handleUnfollow : handleFollow}
+        >
+          {isFollowing ? "Unfollow" : "Follow"}
+        </Button>
+      </Tooltip>
       <div className="counts-container">
         <Tooltip
           title={
-            tooltipFollowersList.length > 0 ? (
-              <div>
-                {tooltipFollowersList.map((follower, index) => (
-                  <div key={index}>{follower || "Unknown"}</div> // Use a valid field
-                ))}
-              </div>
+            !isGuest ? (
+              tooltipFollowersList.length > 0 ? (
+                <div>
+                  {tooltipFollowersList.map((follower, index) => (
+                    <div key={index}>{follower || "Unknown"}</div> // Use a valid field
+                  ))}
+                </div>
+              ) : (
+                <div>No followers</div> // Handle empty list gracefully
+              )
             ) : (
-              <div>No followers</div> // Handle empty list gracefully
+              ""
             )
           }
         >
-          <div className="count-box" onClick={openFollowersModal}>
-            <span className="count">{followersCount}</span>
-            <span className="text">Followers</span>
-          </div>
+          {isGuest ? (
+            <div className="count-box">
+              <span className="count">{formatFollowNumber(1200000)}</span>
+              <span className="text">Followers</span>
+            </div>
+          ) : (
+            <div className="count-box" onClick={openFollowersModal}>
+              <span className="count">
+                {formatFollowNumber(followersCount)}
+              </span>
+              <span className="text">Followers</span>
+            </div>
+          )}
         </Tooltip>
         <Tooltip
           title={
-            tooltipFollowingList.length > 0 ? (
-              <div>
-                {tooltipFollowingList.map((following, index) => (
-                  <div key={index}>{following || "Unknown"}</div> // Use a valid field
-                ))}
-              </div>
+            !isGuest ? (
+              tooltipFollowingList.length > 0 ? (
+                <div>
+                  {tooltipFollowingList.map((following, index) => (
+                    <div key={index}>{following || "Unknown"}</div> // Use a valid field
+                  ))}
+                </div>
+              ) : (
+                <div>No following</div> // Handle empty list gracefully
+              )
             ) : (
-              <div>No following</div> // Handle empty list gracefully
+              ""
             )
           }
         >
-          <div className="count-box" onClick={openFollowingModal}>
-            <span className="count">{followingCount}</span>
-            <span className="text">Following</span>
-          </div>
+          {isGuest ? (
+            <div className="count-box">
+              <span className="count">{formatFollowNumber(12500)}</span>
+              <span className="text">Following</span>
+            </div>
+          ) : (
+            <div className="count-box" onClick={openFollowingModal}>
+              <span className="count">
+                {formatFollowNumber(followingCount)}
+              </span>
+              <span className="text">Following</span>
+            </div>
+          )}
         </Tooltip>
       </div>
 
@@ -191,14 +237,26 @@ const FollowActions = ({ userId }) => {
           placeholder="Search"
           className="modal-search"
           allowClear
+          disabled
           onChange={(e) => console.log(e.target.value)} //add search functionality
         />
-        <div id="scrollableFollowers" className="infinite-scroll-container">
+        <div
+          id="scrollableFollowers"
+          className="infinite-scroll-container"
+          style={{
+            maxHeight: 400,
+            overflowY: "auto",
+            overflowX: "hidden",
+            paddingRight: 10,
+          }}
+        >
           <InfiniteScroll
+            key={followersList.length}
             dataLength={followersList.length}
             next={() => {
-              setFollowersPage((prev) => prev + 1);
-              fetchFollowers(followersPage + 1);
+              const nextPage = followersPage + 1;
+              setFollowersPage(nextPage);
+              fetchFollowers(nextPage);
             }}
             hasMore={hasMoreFollowers}
             loader={<Spin className="infinite-scroll-loader" />}
@@ -252,14 +310,25 @@ const FollowActions = ({ userId }) => {
           placeholder="Search"
           className="modal-search"
           allowClear
+          disabled
           onChange={(e) => console.log(e.target.value)} //add search functionality
         />
-        <div id="scrollableFollowing" className="infinite-scroll-container">
+        <div
+          id="scrollableFollowing"
+          className="infinite-scroll-container"
+          style={{
+            maxHeight: 400,
+            overflowY: "auto",
+            overflowX: "hidden",
+            paddingRight: 10,
+          }}
+        >
           <InfiniteScroll
             dataLength={followingList.length}
             next={() => {
-              setFollowingPage((prev) => prev + 1);
-              fetchFollowing(followingPage + 1);
+              const nextPage = followingPage + 1;
+              setFollowingPage(nextPage);
+              fetchFollowing(nextPage);
             }}
             hasMore={hasMoreFollowing}
             loader={<Spin className="infinite-scroll-loader" />}

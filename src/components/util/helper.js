@@ -1,5 +1,6 @@
 import { Modal, Tooltip } from "antd";
 import React from "react";
+import { checkUsernameAvailability } from "../../apis/api";
 
 /**
  * A reusable Tooltip wrapper for a component.
@@ -78,4 +79,76 @@ export const applySharpenFilter = (ctx, canvas) => {
 
   imageData.data.set(output);
   ctx.putImageData(imageData, 0, 0);
+};
+
+export const formatFollowNumber = (num) => {
+  if (num >= 1_000_000) {
+    return `${(num / 1_000_000).toFixed(1).replace(/\.0$/, "")}M`;
+  }
+
+  if (num >= 1_000) {
+    return `${(num / 1_000).toFixed(1).replace(/\.0$/, "")}K`;
+  }
+  return num.toString();
+};
+
+export const validatePassword = (password, username) => {
+  const length = password.length >= 8 && password.length <= 32;
+  const numberAndLetter = /[A-Za-z]/.test(password) && /\d/.test(password);
+  const notUserID = password !== username;
+
+  return {
+    isValid: length && numberAndLetter && notUserID,
+    requirements: { length, numberAndLetter, notUserID },
+    strength:
+      (length ? 33 : 0) + (numberAndLetter ? 33 : 0) + (notUserID ? 34 : 0),
+  };
+};
+
+export const passwordValidator = (password, username) => {
+  const { isValid, requirements } = validatePassword(password, username);
+  if (!isValid) {
+    return {
+      isValid: false,
+      error: "Password does not meet the requirements.",
+      requirements,
+    };
+  }
+  return { isValid: true, requirements };
+};
+
+export const restrictedUsernames = [
+  "admin",
+  "root",
+  "superuser",
+  "Administrator",
+  "Admin",
+  "Root",
+  "Superuser",
+];
+
+export const isRestrictedUsername = (username) => {
+  if (!username) return false;
+  const normalizedUsername = username.toLowerCase();
+  return restrictedUsernames.some((restricted) =>
+    normalizedUsername.includes(restricted)
+  );
+};
+
+export const checkUsernameAvailabilityWrapper = async (
+  username,
+  setUsernameAvailable,
+  setError
+) => {
+  if (!username) return;
+
+  try {
+    const isAvailable = await checkUsernameAvailability(username.toLowerCase());
+    setUsernameAvailable(isAvailable);
+    if (!isAvailable) {
+      setError("Username is already taken.");
+    }
+  } catch (error) {
+    setError("Failed to check username availability. Please try again.");
+  }
 };

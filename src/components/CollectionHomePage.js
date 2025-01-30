@@ -132,6 +132,13 @@ const CollectionHomePage = () => {
       } else {
         // Fetch collections for a logged-in user
         const rawCollections = await getCollections();
+
+        // Check if the user navigated from ListCollectionsPage
+        const isNavigated =
+          location.state?.listUserDetails || location.state?.isGuest;
+
+        const storedCollapseState =
+          JSON.parse(localStorage.getItem("collapsedCollections")) || {};
         // Populate each collection with its items
         collectionData = await Promise.all(
           rawCollections.map(async (collection) => {
@@ -143,7 +150,14 @@ const CollectionHomePage = () => {
             return {
               ...collection,
               items: itemsResponse.items || [], // Populate items
-              collapsed: false, // Ensure collapsed state is added
+              collapsed: isNavigated
+                ? true
+                : storedCollapseState[collection.id] ?? true, // Ensure collapsed state is added
+              // collapsed: isNavigated
+              //   ? true
+              //   : JSON.parse(localStorage.getItem("collapsedCollections"))?.[
+              //       collection.id
+              //     ] ?? true,
               hasMore: itemsResponse.totalItems > itemsResponse.items.length, // Check if more items exist
               page: 2, // Next page to fetch
             };
@@ -401,15 +415,38 @@ const CollectionHomePage = () => {
     }
   };
 
-  const handleToggleCollapse = async (collectionId) => {
-    setCollections((prevCollections) =>
-      prevCollections.map((collection) => {
+  // const handleToggleCollapse = async (collectionId) => {
+  //   setCollections((prevCollections) =>
+  //     prevCollections.map((collection) => {
+  //       if (collection.id === collectionId) {
+  //         return { ...collection, collapsed: !collection.collapsed };
+  //       }
+  //       return collection;
+  //     })
+  //   );
+  // };
+  const handleToggleCollapse = (collectionId) => {
+    setCollections((prevCollections) => {
+      const updatedCollections = prevCollections.map((collection) => {
         if (collection.id === collectionId) {
           return { ...collection, collapsed: !collection.collapsed };
         }
         return collection;
-      })
-    );
+      });
+
+      // Save collapsed state in localStorage
+      const collapseState = updatedCollections.reduce((acc, collection) => {
+        acc[collection.id] = collection.collapsed;
+        return acc;
+      }, {});
+
+      localStorage.setItem(
+        "collapsedCollections",
+        JSON.stringify(collapseState)
+      );
+
+      return updatedCollections;
+    });
   };
 
   const handleAddItem = (collectionId) => {
@@ -483,7 +520,7 @@ const CollectionHomePage = () => {
               : `${userName}'s Collections`}
           </h1>
           <div className="user-home-page-search-dropdown">
-            <FollowActions userId={id} />
+            <FollowActions userId={id} isGuest={isGuest} />
             {/* <Button>follow</Button>
             <span>following</span>
             <span>followers</span> */}
