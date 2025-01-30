@@ -159,7 +159,7 @@ const SignIn = () => {
       <div className="register-container">
         <div className="signin-header">
           <img src={myLogo} alt="Logo" className="signin-logo" />
-          <span className="signin-title">Ex-hibit</span>
+          <span className="signin-title">Ex-hibt</span>
         </div>
         {/* <h2>Sign in to your account</h2> */}
         <Form
