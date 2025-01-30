@@ -44,7 +44,7 @@ const ForgotPassword = () => {
         <div className="settings-section">
           <div className="signin-header">
             <img src={myLogo} alt="Logo" className="signin-logo" />
-            <span className="signin-title">Ex-hibit</span>
+            <span className="signin-title">Ex-hibt</span>
           </div>
 
           <Form>

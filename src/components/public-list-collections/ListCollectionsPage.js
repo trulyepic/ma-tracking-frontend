@@ -180,7 +180,7 @@ const ListCollectionsPage = () => {
     <div className="list-collections-page">
       <CookieConsent />
       <Helmet>
-        <title>Public Collections | Ex-hibit</title>
+        <title>Public Collections | Ex-hibt</title>
         <meta
           name="description"
           content="Explore public collections shared by the community. 
@@ -191,7 +191,7 @@ const ListCollectionsPage = () => {
           content="collections, public, browse, share, social, social media,
         cool, manhwa, manga, like"
         />
-        <meta property="og:title" content="Public Collections | Ex-hibit" />
+        <meta property="og:title" content="Public Collections | Ex-hibt" />
         <meta
           property="og:description"
           content="Explore collections shared by the community."

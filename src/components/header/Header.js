@@ -98,7 +98,7 @@ const Header = () => {
     <header className="app-header">
       <div className="logo-container" onClick={handleLogoClick}>
         <img src={myLogo} alt="Logo" className="app-logo" />
-        <span className="app-title">Ex-hibit</span>
+        <span className="app-title">Ex-hibt</span>
       </div>
       <div>
         <nav className="app-header-nav">

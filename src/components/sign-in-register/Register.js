@@ -150,7 +150,7 @@ const Register = () => {
       <div className="register-container">
         <div className="signin-header">
           <img src={myLogo} alt="Logo" className="signin-logo" />
-          <span className="signin-title">Ex-hibit</span>
+          <span className="signin-title">Ex-hibt</span>
         </div>
         {/* <h2>Register</h2> */}
         <Form name="register" layout="vertical" onFinish={onFinish}>
