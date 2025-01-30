@@ -392,3 +392,57 @@ export const searchUserCollections = async (userId, query) => {
     return [];
   }
 };
+
+/**
+ * Check if the given username is available.
+ * @param {string} username - The username to check.
+ * @returns {Promise<boolean>} - Returns true if the username is available, otherwise false.
+ */
+export const checkUsernameAvailability = async (username) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/check-username`, {
+      params: { username },
+    });
+    return response.data.available;
+  } catch (error) {
+    console.error("Error checking username availability:", error);
+    throw error.response?.data || "Failed to check username availability";
+  }
+};
+
+/**
+ * Confirm a user's email address.
+ * Sends a POST request to confirm the email using the provided token.
+ * @param {string} token - The email confirmation token.
+ * @returns {Promise<Object>} The API response or error response.
+ */
+export const confirmEmail = async (token) => {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/confirm-email`, null, {
+      params: { token },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error confirming email:", error);
+    throw error.response?.data || "Failed to confirm email";
+  }
+};
+
+export const resendEmailConfirmation = async (email, provider = "gmail") => {
+  try {
+    const response = await axios.post(
+      `${API_BASE_URL}/resend-confirmation`,
+      null,
+      {
+        params: { email, provider }, // Send provider as a parameter
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error resending confirmation email:", error);
+    if (error.response?.data) {
+      throw error.response.data;
+    }
+    throw "Failed to resend confirmation email";
+  }
+};

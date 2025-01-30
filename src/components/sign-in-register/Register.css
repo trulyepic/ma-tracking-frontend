@@ -1,8 +1,9 @@
 .register-container {
-  max-width: 400px;
+  max-width: 300px;
   width: 100%;
   margin: auto;
   /* margin: 50px auto; */
+  /* background-color: #1a1a1d; */
   padding: 40px;
   display: flex;
   flex-direction: column;
@@ -12,6 +13,7 @@
   top: 50%;
   left: 50%; */
   /* transform: translate(-50%, -50%); */
+  border-radius: 8px;
 }
 
 main {
@@ -38,12 +40,66 @@ main {
   color: #8e8e8e !important;
 }
 
+.reg-input::placeholder {
+  color: #ababab !important;
+}
+
+.signin-logo {
+  height: 100px;
+}
+
+.signin-divider {
+  color: #f9f9f9 !important;
+  /* border-block-start-color: #f9f9f9 !important; */
+}
+
+.signin-divider.ant-divider-horizontal.ant-divider-with-text::after {
+  border-block-start-color: #f9f9f9 !important;
+  border-block-start: 1px solid !important;
+}
+
+.signin-divider.ant-divider-horizontal.ant-divider-with-text::before {
+  border-block-start-color: #f9f9f9 !important;
+  border-block-start: 1px solid !important;
+}
+
+.signin-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.signin-title {
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 25px;
+}
+
+.sigin-btn {
+  margin-top: 20px;
+}
+
 .signin-footer {
   display: flex;
   flex-direction: column;
   align-items: center;
   font-family: Roboto;
   color: #ffffff;
+}
+
+.signin-footer-v2 {
+  display: flex;
+  /* align-items: center; */
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.signin-confirmation-email {
+  color: #bebebe !important;
+}
+
+.signin-select {
+  margin-top: 8px !important;
 }
 
 .signin-footer a {
@@ -76,6 +132,22 @@ main {
 
 .avatar-upload .ant-btn-color-default {
   color: #ffffff !important;
+}
+
+.password-requirements {
+  list-style: none;
+  padding: 0;
+  /* margin-top: 10px; */
+}
+
+.password-requirements li {
+  color: #838383;
+  margin: 5px 0;
+}
+
+.password-requirements li.met {
+  color: #52c41a; /* Ant Design green */
+  font-weight: bold;
 }
 
 /* antd override */
@@ -121,6 +193,19 @@ main {
   max-height: 500px !important;
   overflow-y: auto !important;
   padding: 0 16px !important;
+}
+
+.ant-divider-horizontal.ant-divider-with-text {
+  color: #9f9f9f !important;
+  font-size: 13px;
+}
+
+.ant-modal-confirm-title {
+  color: #bebebe !important;
+}
+
+.avatar-editor {
+  background-color: #393941 !important;
 }
 
 /* Adjust positioning for shorter screens */

@@ -10,6 +10,7 @@ import { Avatar, Button, Card, Divider, List, message, Spin } from "antd";
 import "./ProfilePage.css";
 import { getCollectionsDetailWithPagination } from "../../apis/api";
 import { getCollectionsByUserId } from "../../apis/apiCollection";
+import { formatFollowNumber } from "../util/helper";
 
 const ProfilePage = () => {
   const { id } = useParams();
@@ -103,13 +104,13 @@ const ProfilePage = () => {
           <div className="profile-stats">
             <div className="profile-stat">
               <div className="profile-stat-number">
-                {userDetails.followersCount || 0}
+                {formatFollowNumber(userDetails.followersCount) || 0}
               </div>
               <div className="profile-stat-label">Followers</div>
             </div>
             <div className="profile-stat">
               <div className="profile-stat-number">
-                {userDetails.followingCount || 0}
+                {formatFollowNumber(userDetails.followingCount) || 0}
               </div>
               <div className="profile-stat-label">Following</div>
             </div>
@@ -130,8 +131,8 @@ const ProfilePage = () => {
               <span className="collection-name">{collection.name}</span>
               <Divider type="horizontal" className="profile-divider" />
               <List
-                grid={{ gutter: 16, xs: 1, sm: 2, md: 3, lg: 4, column: 4 }}
-                // grid={{ gutter: 16, column: 4 }}
+                // grid={{ gutter: 16, xs: 1, sm: 2, md: 3, lg: 4, column: 4 }}
+                grid={{ gutter: 16, column: 4 }}
                 dataSource={collection.items}
                 renderItem={(item) => (
                   <List.Item>

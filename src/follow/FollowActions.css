@@ -7,6 +7,10 @@
   cursor: pointer;
 }
 
+.follow-actions:disabled {
+  color: #ffffff !important;
+}
+
 /* Default Follow button */
 
 .follow-btn,
@@ -137,4 +141,9 @@
 
 .anticon.anticon-close {
   color: #ffffff !important;
+}
+
+.ant-btn-variant-outlined:disabled {
+  color: #969696 !important;
+  border-color: #969696 !important;
 }

@@ -36,3 +36,7 @@
 .password-input {
   margin-bottom: 20px;
 }
+
+.error-text {
+  color: #fb3030;
+}

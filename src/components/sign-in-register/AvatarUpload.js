@@ -64,6 +64,7 @@ const AvatarUpload = ({ visible = true, onClose, onUpload }) => {
     >
       {image ? (
         <AvatarEditor
+          className="avatar-editor"
           ref={(ref) => setEditorRef(ref)}
           image={image}
           width={150}

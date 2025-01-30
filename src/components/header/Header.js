@@ -70,6 +70,12 @@ const Header = () => {
           icon: <LogoutOutlined />,
           onClick: handleLogout,
         },
+        {
+          key: "profile",
+          label: "Profile",
+          icon: <UserOutlined />,
+          onClick: () => navigate(`/user-profile/${userDetails.id}`),
+        },
       ]
     : [
         {
@@ -87,7 +93,7 @@ const Header = () => {
   const handleLogoClick = () => {
     navigate("/");
   };
-
+  console.log("userDetails: ", userDetails);
   return (
     <header className="app-header">
       <div className="logo-container" onClick={handleLogoClick}>
