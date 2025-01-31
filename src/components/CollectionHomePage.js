@@ -316,7 +316,7 @@ const CollectionHomePage = () => {
     // console.log("itemId from home page:", itemId);
     showConfirmModal(
       "Are you sure you want to delete this item?",
-      "This action cannot be undone.",
+      <span className="del-confirm-mod">This action cannot be undone.</span>,
       async () => {
         try {
           await deleteItemFromCollection(collectionId, itemId);

@@ -240,16 +240,7 @@ const FollowActions = ({ userId, isGuest }) => {
           disabled
           onChange={(e) => console.log(e.target.value)} //add search functionality
         />
-        <div
-          id="scrollableFollowers"
-          className="infinite-scroll-container"
-          style={{
-            maxHeight: 400,
-            overflowY: "auto",
-            overflowX: "hidden",
-            paddingRight: 10,
-          }}
-        >
+        <div id="scrollableFollowers" className="infinite-scroll-container">
           <InfiniteScroll
             key={followersList.length}
             dataLength={followersList.length}
@@ -259,7 +250,12 @@ const FollowActions = ({ userId, isGuest }) => {
               fetchFollowers(nextPage);
             }}
             hasMore={hasMoreFollowers}
-            loader={<Spin className="infinite-scroll-loader" />}
+            // loader={<Spin className="infinite-scroll-loader" />}
+            loader={
+              <div style={{ textAlign: "center", padding: "10px" }}>
+                <Spin />
+              </div>
+            }
             scrollableTarget="scrollableFollowers"
           >
             {followersList.length > 0 ? (
@@ -304,7 +300,7 @@ const FollowActions = ({ userId, isGuest }) => {
         open={showFollowingModal}
         onCancel={closeFollowingModal}
         footer={null}
-        className="modal-following"
+        className="modal-followers"
       >
         <Search
           placeholder="Search"
@@ -313,16 +309,7 @@ const FollowActions = ({ userId, isGuest }) => {
           disabled
           onChange={(e) => console.log(e.target.value)} //add search functionality
         />
-        <div
-          id="scrollableFollowing"
-          className="infinite-scroll-container"
-          style={{
-            maxHeight: 400,
-            overflowY: "auto",
-            overflowX: "hidden",
-            paddingRight: 10,
-          }}
-        >
+        <div id="scrollableFollowing" className="infinite-scroll-container">
           <InfiniteScroll
             dataLength={followingList.length}
             next={() => {
@@ -331,7 +318,12 @@ const FollowActions = ({ userId, isGuest }) => {
               fetchFollowing(nextPage);
             }}
             hasMore={hasMoreFollowing}
-            loader={<Spin className="infinite-scroll-loader" />}
+            // loader={<Spin className="infinite-scroll-loader" />}
+            loader={
+              <div style={{ textAlign: "center", padding: "10px" }}>
+                <Spin />
+              </div>
+            }
             scrollableTarget="scrollableFollowing"
           >
             {followingList.length > 0 ? (

@@ -299,6 +299,10 @@ html {
   background-color: #ff4d4f !important;
 }
 
+.del-confirm-mod {
+  color: #ffffff !important;
+}
+
 .card-btns {
   display: flex;
   gap: 10px;
@@ -353,6 +357,10 @@ html {
 
 .ant-dropdown .ant-dropdown-menu {
   background-color: #1a1a1d !important;
+}
+
+.ant-btn-color-default {
+  color: #ffffff !important;
 }
 
 @media (max-width: 768px) {
