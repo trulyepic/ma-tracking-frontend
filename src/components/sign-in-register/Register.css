@@ -165,16 +165,16 @@ main {
   margin-top: 10px !important;
 }
 
-.google-signin-container div {
+/* .google-signin-container div {
   background-color: transparent !important;
   color: #ffffff !important;
   border-color: #a7a7a7 !important;
   border-radius: 8px !important;
-}
+} */
 
-.google-signin-container:hover {
+/* .google-signin-container:hover {
   background-color: rgba(255, 255, 255, 0.1) !important;
-}
+} */
 
 .signin-modals .ant-modal-content {
   background-color: #1e1e1f !important;

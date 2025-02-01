@@ -212,6 +212,7 @@ const SignIn = () => {
                   size="large"
                   shape="rectangular"
                   logo_alignment="center"
+                  width="300"
                   onSuccess={handleGoogleSuccess}
                   onError={() =>
                     Modal.error({
