@@ -207,7 +207,10 @@ const SignIn = () => {
               {/* Google Sign-in Button using Ant Design */}
               <div className="google-signin-container">
                 <GoogleLogin
+                  theme="outline"
                   text="signin"
+                  size="large"
+                  shape="rectangular"
                   logo_alignment="center"
                   onSuccess={handleGoogleSuccess}
                   onError={() =>
