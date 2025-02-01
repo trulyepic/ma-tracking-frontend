@@ -11,6 +11,7 @@ import {
 import { getUserDetails, uploadAvatar } from "../../apis/api";
 import AvatarUpload from "../sign-in-register/AvatarUpload";
 import myLogo from "../../components/images/logo/myLogo.png";
+import { googleLogout } from "@react-oauth/google";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -47,6 +48,7 @@ const Header = () => {
     localStorage.removeItem("authToken");
     setIsAuthenticated(false);
     setUserDetails(null);
+    googleLogout();
     navigate("/signin");
   };
 
