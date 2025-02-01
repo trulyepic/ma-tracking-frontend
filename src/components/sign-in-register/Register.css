@@ -157,6 +157,29 @@ main {
   font-weight: bold;
 }
 
+.google-signin-container {
+  /* display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%; */
+  margin-top: 10px;
+}
+
+.google-signin-container div {
+  background-color: transparent !important;
+  color: #ffffff;
+  border-color: #a7a7a7;
+  border-radius: 8px;
+}
+
+.google-signin-container:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.signin-modals .ant-modal-content {
+  background-color: #1e1e1f !important;
+}
+
 /* antd override */
 
 .ant-input-outlined.ant-input-status-error:not(.ant-input-disabled) {
