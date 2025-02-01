@@ -10,15 +10,46 @@ html {
 }
 
 .user-home-main-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   text-align: center;
   color: #ffffff;
-  letter-spacing: 2px;
+  /* letter-spacing: 2px; */
+  line-height: 1.5;
 }
 
-.suer-home-main-sub-txt {
-  font-style: italic;
+.home-header-txt {
+  font-weight: 600;
+  font-size: 1.5rem;
+  margin-bottom: 5px;
+  background: linear-gradient(
+    to right,
+    #00ff00 30%,
+    /* Orange-Red */ #007bff 65%
+  );
+  background-clip: text; /* Standard property */
+  -webkit-background-clip: text; /* WebKit-specific */
+  -webkit-text-fill-color: transparent;
+}
+
+.home-main-sub-txt {
+  /* font-style: italic; */
   letter-spacing: 2px;
-  font-size: 14px;
+  font-size: 16px;
+  /* color: #007bff; */
+}
+
+.home-sub-txt {
+  font-size: 13px;
+  color: #d0d0d0;
+  /* font-style: italic; */
+  letter-spacing: 1px;
+}
+
+.home-and {
+  color: #959595cf;
+  font-size: 12px;
 }
 
 .user-home-page-header {

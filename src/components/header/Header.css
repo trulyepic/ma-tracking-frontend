@@ -26,6 +26,14 @@
   /* padding-right: -5px;
   text-decoration: none;
   color: #ffffff; */
+  background: linear-gradient(
+    to right,
+    #00ff00 30%,
+    /* Orange-Red */ #007bff 65%
+  );
+  background-clip: text; /* Standard property */
+  -webkit-background-clip: text; /* WebKit-specific */
+  -webkit-text-fill-color: transparent;
 }
 
 .app-header-nav {

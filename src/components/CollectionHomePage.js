@@ -507,9 +507,13 @@ const CollectionHomePage = () => {
         <CookieConsent />
         {isGuest && (
           <div className="user-home-main-header">
-            <h1>Welcome to Ex-hibit.</h1>
-            <span className="suer-home-main-sub-txt">
-              Start creating your collections now!
+            <span className="home-header-txt">Welcome to Ex-hibit</span>
+            <span className="home-main-sub-txt">
+              Start creating your collections now
+            </span>
+            <span className="home-and">&</span>
+            <span className="home-sub-txt">
+              Explore the public collections from other users!
             </span>
           </div>
         )}
