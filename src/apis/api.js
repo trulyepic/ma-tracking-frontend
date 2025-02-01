@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const API_BASE_URL = "http://localhost:8080/api/ma-tracking";
+const API_BASE_URL_AUTH = "http://localhost:8080/api/auth";
 
 export const getItemByRating = async (rating) => {
   return new Array(10).fill(null).map((_, index) => ({
@@ -444,5 +445,22 @@ export const resendEmailConfirmation = async (email, provider = "gmail") => {
       throw error.response.data;
     }
     throw "Failed to resend confirmation email";
+  }
+};
+
+export const googleSignIn = async (idToken) => {
+  try {
+    const response = await axios.post(
+      `${API_BASE_URL_AUTH}/google`,
+      { idToken }, // Send as an object
+      {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Google Sign-In failed:", error);
+    throw error.response?.data || "Google Sign-In failed";
   }
 };
