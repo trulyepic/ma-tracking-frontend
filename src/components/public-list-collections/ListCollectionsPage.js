@@ -180,7 +180,7 @@ const ListCollectionsPage = () => {
     <div className="list-collections-page">
       <CookieConsent />
       <Helmet>
-        <title>Public Collections | Ex-hibt</title>
+        <title>Ex-hibt</title>
         <meta
           name="description"
           content="Explore public collections shared by the community. 

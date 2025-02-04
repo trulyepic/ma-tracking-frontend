@@ -1,8 +1,11 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:8080/api/collections";
+// const API_BASE_URL = "http://localhost:8080/api/collections";
 
-const API_BASE_URL_ORI = "http://localhost:8080/api/ma-tracking";
+const API_BASE_URL = process.env.REACT_APP_COLECTION_URL;
+
+// const API_BASE_URL_ORI = "http://localhost:8080/api/ma-tracking";
+const API_BASE_URL_ORI = process.env.REACT_APP_BASE_URL;
 
 export const createCollection = async (collectionName) => {
   const token = localStorage.getItem("authToken");
@@ -67,6 +70,7 @@ export const getCollectionItems = async (collectionId, page, limit) => {
 
 export const getGuestCollectionsWithPaginationMa = async (page, limit) => {
   try {
+    console.log("REACT_APP_BASE_URL", API_BASE_URL_ORI);
     const response = await axios.get(`${API_BASE_URL_ORI}/guest-items`, {
       params: { page, limit },
     });

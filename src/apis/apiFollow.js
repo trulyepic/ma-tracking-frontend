@@ -1,6 +1,8 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:8080/api/ma-tracking";
+// const API_BASE_URL = "http://localhost:8080/api/ma-tracking";
+
+const API_BASE_URL = process.env.REACT_APP_BASE_URL;
 
 // Follow a user
 export const followUser = async (userId) => {
