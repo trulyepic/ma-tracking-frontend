@@ -3,9 +3,9 @@ frontend:
   phases:
     preBuild:
       commands:
-        - echo "REACT_APP_BASE_URL=http://ex-hibt-v3-env.eba-qqfbhnrp.us-west-1.elasticbeanstalk.com/api/ma-tracking" >> .env
-        - echo "REACT_APP_COLECTION_URL=http://ex-hibt-v3-env.eba-qqfbhnrp.us-west-1.elasticbeanstalk.com/api/collections" >> .env
-        - echo "REACT_APP_AUTH_URL=http://ex-hibt-v3-env.eba-qqfbhnrp.us-west-1.elasticbeanstalk.com/api/auth" >> .env
+        - echo "REACT_APP_BASE_URL=https://api.ex-hibt.com/api/ma-tracking" >> .env
+        - echo "REACT_APP_COLECTION_URL=https://api.ex-hibt.com/api/collections" >> .env
+        - echo "REACT_APP_AUTH_URL=https://api.ex-hibt.com/api/auth" >> .env
     build:
       commands:
         - npm install
