@@ -247,3 +247,56 @@ main {
     transform: none; /* Disable the centering transform */
   }
 }
+
+@media (max-width: 768px) {
+  main {
+    padding: 20px;
+    align-items: flex-start;
+  }
+
+  /* .register-container {
+    max-width: 90vw;
+    padding: 20px;
+    margin-top: 50px;
+  } */
+
+  .signin-header {
+    flex-direction: column;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .signin-title {
+    font-size: 20px;
+  }
+
+  /* .signin-logo {
+    height: 80px;
+  } */
+
+  .google-signin-container {
+    width: 100% !important;
+  }
+
+  /* .signin-footer-v2 {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+  } */
+
+  .google-signin-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  /* .google-signin-container > div {
+    width: 100% !important; 
+    max-width: 320px; 
+  } */
+
+  .sigin-btn {
+    width: 100%;
+  }
+}

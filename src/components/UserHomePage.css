@@ -402,9 +402,64 @@ html {
   color: #ffffff !important;
 }
 
+/* mobile friendly */
+
+@media (max-width: 1024px) {
+  .user-home-page-container {
+    padding: 20px;
+  }
+
+  .user-home-page-header {
+    align-items: center;
+    text-align: center;
+  }
+
+  .user-home-page-title {
+    font-size: 1.5rem;
+  }
+
+  .user-home-page-search-dropdown {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  /* .right-controls {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  } */
+}
+
 @media (max-width: 768px) {
   .filters {
     flex-direction: column;
     gap: 10px;
+    align-items: center;
+  }
+
+  .sort-buttons {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .collection-name-header {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .collection-container {
+    padding: 10px;
+  }
+
+  .user-collection-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 10px;
+  }
+
+  .user-collection-item-image {
+    width: 100%;
+    height: auto;
   }
 }

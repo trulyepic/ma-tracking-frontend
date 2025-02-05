@@ -179,7 +179,10 @@ const SignIn = () => {
                 { required: true, message: "Please input your password!" },
               ]}
             >
-              <Input.Password placeholder="Password" />
+              <Input.Password
+                placeholder="Password"
+                className="sign-placeholder"
+              />
             </Form.Item>
             <Form.Item>
               <Button

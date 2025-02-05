@@ -3,7 +3,9 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./Header.css";
 import { Avatar, Dropdown, Menu, message } from "antd";
 import {
+  CloseOutlined,
   LogoutOutlined,
+  MenuOutlined,
   SettingOutlined,
   UploadOutlined,
   UserOutlined,
@@ -19,6 +21,11 @@ const Header = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userDetails, setUserDetails] = useState(null);
   const [isAvatarModalVisible, setAvatarModalVisible] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
 
   const fetchUserDetails = async () => {
     const token = localStorage.getItem("authToken");
@@ -103,7 +110,7 @@ const Header = () => {
         <span className="app-title">Ex-hibt</span>
       </div>
       <div>
-        <nav className="app-header-nav">
+        <nav className={`app-header-nav ${isMobileMenuOpen ? "open" : ""}`}>
           <Link to="/"> Home</Link>
           <Link to="/list-collections">Public Collections</Link>
         </nav>
@@ -128,6 +135,24 @@ const Header = () => {
           /> */}
         </Dropdown>
       </div>
+      {/* Mobile Menu Toggle Button */}
+      <div className="mobile-menu-toggle" onClick={toggleMobileMenu}>
+        {isMobileMenuOpen ? <CloseOutlined /> : <MenuOutlined />}
+      </div>
+
+      {/* Mobile Navigation Overlay */}
+      {isMobileMenuOpen && (
+        <div className="mobile-menu-overlay" onClick={toggleMobileMenu}>
+          <nav className="mobile-nav">
+            <Link to="/" onClick={toggleMobileMenu}>
+              Home
+            </Link>
+            <Link to="/list-collections" onClick={toggleMobileMenu}>
+              Public Collections
+            </Link>
+          </nav>
+        </div>
+      )}
       {isAvatarModalVisible && (
         <AvatarUpload
           visible={isAvatarModalVisible}
