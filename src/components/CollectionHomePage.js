@@ -23,6 +23,7 @@ import {
 import { DownOutlined, UpOutlined } from "@ant-design/icons";
 import CookieConsent from "./cookies/CookieConsent";
 import FollowActions from "../follow/FollowActions";
+import TooltipWrapper from "./util/TooltipWrapper";
 
 const { Search } = Input;
 
@@ -542,7 +543,7 @@ const CollectionHomePage = () => {
                 <label style={{ marginRight: "10px" }}>
                   Allow Public View:
                 </label>
-                {withTooltip(
+                {/* {withTooltip(
                   <Switch
                     checked={publicView}
                     onChange={handleTogglePublicView}
@@ -550,9 +551,20 @@ const CollectionHomePage = () => {
                   />,
                   isGuest || !isOwner,
                   isGuest
-                )}
+                )} */}
+
+                <TooltipWrapper
+                  isDisabled={isGuest || !isOwner}
+                  isGuest={isGuest}
+                >
+                  <Switch
+                    checked={publicView}
+                    onChange={handleTogglePublicView}
+                    disabled={isGuest || !isOwner}
+                  />
+                </TooltipWrapper>
               </div>
-              {withTooltip(
+              {/* {withTooltip(
                 <Button
                   size="large"
                   disabled={isGuest || !isOwner}
@@ -562,7 +574,20 @@ const CollectionHomePage = () => {
                 </Button>,
                 isGuest || !isOwner,
                 isGuest
-              )}
+              )} */}
+
+              <TooltipWrapper
+                isDisabled={isGuest || !isOwner}
+                isGuest={isGuest}
+              >
+                <Button
+                  size="large"
+                  disabled={isGuest || !isOwner}
+                  onClick={handleAddCollection}
+                >
+                  <span className="user-home-add-btn">Add Collection</span>
+                </Button>
+              </TooltipWrapper>
             </div>
           </div>
           <div className="filters">
@@ -584,7 +609,7 @@ const CollectionHomePage = () => {
         {filteredCollections.map((collection) => (
           <div key={collection.id} className="collection-section">
             <div className="collection-name-header">
-              {withTooltip(
+              {/* {withTooltip(
                 <Button
                   type="primary"
                   onClick={() => handleAddItem(collection.id)}
@@ -595,7 +620,21 @@ const CollectionHomePage = () => {
                 </Button>,
                 isGuest || !isOwner,
                 isGuest
-              )}
+              )} */}
+
+              <TooltipWrapper
+                isDisabled={isGuest || !isOwner}
+                isGuest={isGuest}
+              >
+                <Button
+                  type="primary"
+                  onClick={() => handleAddItem(collection.id)}
+                  disabled={isGuest || !isOwner}
+                  className="add-item-collection"
+                >
+                  Add Item
+                </Button>
+              </TooltipWrapper>
               <div
                 className="collection-name-center"
                 onClick={() =>
@@ -623,7 +662,7 @@ const CollectionHomePage = () => {
                   Rename Collection name
                 </Button>
               )}
-              {withTooltip(
+              {/* {withTooltip(
                 <Button
                   type="default"
                   // danger
@@ -635,7 +674,22 @@ const CollectionHomePage = () => {
                 </Button>,
                 isGuest || !isOwner,
                 isGuest
-              )}
+              )} */}
+
+              <TooltipWrapper
+                isDisabled={isGuest || !isOwner}
+                isGuest={isGuest}
+              >
+                <Button
+                  type="default"
+                  // danger
+                  className="delete-col-btn"
+                  disabled={isGuest || !isOwner}
+                  onClick={() => confirmDeleteCollection(collection.id)}
+                >
+                  Delete Collection
+                </Button>
+              </TooltipWrapper>
             </div>
             <Divider
               variant="solid"
