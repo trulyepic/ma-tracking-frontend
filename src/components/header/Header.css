@@ -60,6 +60,10 @@
   margin-left: auto;
 }
 
+.avatar-upload .ant-modal-content {
+  background-color: #0f0f10 !important;
+}
+
 .avatar {
   transition: filter 0.3s ease, transform 0.3s ease !important;
 }

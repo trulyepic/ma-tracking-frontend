@@ -27,6 +27,7 @@ export const showConfirmModal = (title, content, onOk) => {
     okType: "danger",
     cancelText: "Cancel",
     onOk,
+    className: "signin-modals",
   });
 };
 

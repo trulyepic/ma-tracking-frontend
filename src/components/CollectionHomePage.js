@@ -365,6 +365,7 @@ const CollectionHomePage = () => {
       okText: "Delete",
       okType: "danger",
       cancelText: "Cancel",
+      className: "del-col ",
       onOk: () => {
         handleDeleteCollection(collectionId);
       },

@@ -66,7 +66,10 @@ const AddCollection = () => {
             { required: true, message: "Please enter a collection name." },
           ]}
         >
-          <Input placeholder="Enter collection name" />
+          <Input
+            placeholder="Enter collection name"
+            className="placeholder-txt"
+          />
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit" loading={loading}>

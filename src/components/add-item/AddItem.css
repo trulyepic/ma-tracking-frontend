@@ -23,7 +23,7 @@
 }
 
 .upload-text {
-  color: #ffffff;
+  color: #ffffff !important;
 }
 
 .edit-btns {
@@ -33,6 +33,10 @@
 
 .cancel-btn {
   color: #ffffff !important;
+}
+
+.placeholder-txt::placeholder {
+  color: #ffffff9c !important;
 }
 
 .cancel-btn:hover {

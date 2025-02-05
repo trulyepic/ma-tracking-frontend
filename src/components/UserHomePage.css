@@ -69,6 +69,14 @@ html {
   margin-bottom: 20px;
 }
 
+.del-col .ant-modal-content {
+  background-color: #0f0f10 !important;
+}
+
+.del-col .ant-modal-confirm-content {
+  color: #ffffff !important;
+}
+
 .right-controls {
   display: flex;
   align-items: center;
