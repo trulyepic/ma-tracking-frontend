@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Tooltip } from "antd";
 
-const TooltipWrapper = ({ children, isDisabled, isGuest }) => {
-  const tooltipMessage = isGuest
-    ? "You must log in or register to use this feature."
-    : "You can only use this feature for your own collections.";
+const TooltipWrapper = ({ children, tooltipContent, isDisabled }) => {
+  // const tooltipMessage = isGuest
+  //   ? "You must log in or register to use this feature."
+  //   : "You can only use this feature for your own collections.";
 
   const [isMobile, setIsMobile] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
@@ -24,12 +24,17 @@ const TooltipWrapper = ({ children, isDisabled, isGuest }) => {
     };
   }, []);
 
+  // const handleTouchStart = () => {
+  //   if (!isDisabled) return;
+  //   setShowTooltip(true);
+  //   // pressTimer.current = setTimeout(() => {
+  //   //   setShowTooltip(true);
+  //   // }, 500); // Show tooltip after 500ms of press
+  // };
   const handleTouchStart = () => {
-    if (!isDisabled) return;
-
-    pressTimer.current = setTimeout(() => {
+    if (isDisabled && tooltipContent) {
       setShowTooltip(true);
-    }, 500); // Show tooltip after 500ms of press
+    }
   };
 
   const handleTouchEnd = () => {
@@ -45,7 +50,7 @@ const TooltipWrapper = ({ children, isDisabled, isGuest }) => {
       style={{ display: "inline-block", position: "relative" }}
     >
       {children}
-      {showTooltip && (
+      {showTooltip && tooltipContent && (
         <div
           style={{
             position: "absolute",
@@ -61,12 +66,12 @@ const TooltipWrapper = ({ children, isDisabled, isGuest }) => {
             zIndex: 999,
           }}
         >
-          {tooltipMessage}
+          {tooltipContent}
         </div>
       )}
     </div>
   ) : (
-    <Tooltip title={isDisabled ? tooltipMessage : ""}>{children}</Tooltip>
+    <Tooltip title={isDisabled ? tooltipContent : ""}>{children}</Tooltip>
   );
 };
 

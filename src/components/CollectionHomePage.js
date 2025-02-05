@@ -503,6 +503,7 @@ const CollectionHomePage = () => {
   // console.log("Collections:", collections);
 
   // console.log("home isguest: ", isGuest);
+
   return (
     <div>
       <div className="user-home-page-container">
@@ -554,8 +555,12 @@ const CollectionHomePage = () => {
                 )} */}
 
                 <TooltipWrapper
+                  tooltipContent={
+                    isGuest || !isOwner
+                      ? "You must log in or register to use this feature."
+                      : "You can only use this feature for your own collections."
+                  }
                   isDisabled={isGuest || !isOwner}
-                  isGuest={isGuest}
                 >
                   <Switch
                     checked={publicView}
@@ -577,8 +582,12 @@ const CollectionHomePage = () => {
               )} */}
 
               <TooltipWrapper
+                tooltipContent={
+                  isGuest || !isOwner
+                    ? "You must log in or register to use this feature."
+                    : "You can only use this feature for your own collections."
+                }
                 isDisabled={isGuest || !isOwner}
-                isGuest={isGuest}
               >
                 <Button
                   size="large"
@@ -623,8 +632,12 @@ const CollectionHomePage = () => {
               )} */}
 
               <TooltipWrapper
+                tooltipContent={
+                  isGuest || !isOwner
+                    ? "You must log in or register to use this feature."
+                    : "You can only use this feature for your own collections."
+                }
                 isDisabled={isGuest || !isOwner}
-                isGuest={isGuest}
               >
                 <Button
                   type="primary"
@@ -677,8 +690,12 @@ const CollectionHomePage = () => {
               )} */}
 
               <TooltipWrapper
+                tooltipContent={
+                  isGuest || !isOwner
+                    ? "You must log in or register to use this feature."
+                    : "You can only use this feature for your own collections."
+                }
                 isDisabled={isGuest || !isOwner}
-                isGuest={isGuest}
               >
                 <Button
                   type="default"

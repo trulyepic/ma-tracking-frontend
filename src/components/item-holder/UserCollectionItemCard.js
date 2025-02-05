@@ -4,6 +4,7 @@ import React from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { useNavigate } from "react-router-dom";
 import { withTooltip } from "../util/helper";
+import TooltipWrapper from "../util/TooltipWrapper";
 
 const UserCollectionItemCard = ({
   title,
@@ -69,7 +70,23 @@ const UserCollectionItemCard = ({
         <p className="user-collection-item-card-tags">{genre}</p>
         <p className="user-collection-item-card-notes">{notes}</p>
         <div className="card-btns">
-          {withTooltip(
+          {/* {withTooltip(
+            <Button
+              type="primary"
+              size="medium"
+              danger
+              onClick={() => onDelete(id)}
+              icon={<DeleteOutlined />}
+              className="user-collection-delete-btn"
+              disabled={isGuest || !isOwner}
+            >
+             
+            </Button>,
+            isGuest || !isOwner,
+            isGuest
+          )} */}
+
+          <TooltipWrapper isDisabled={isGuest || !isOwner} isGuest={isGuest}>
             <Button
               type="primary"
               size="medium"
@@ -80,12 +97,25 @@ const UserCollectionItemCard = ({
               disabled={isGuest || !isOwner}
             >
               {/* Delete */}
+            </Button>
+          </TooltipWrapper>
+
+          {/* {withTooltip(
+            <Button
+              type="primary"
+              size="medium"
+              onClick={handleEdit}
+              icon={<EditOutlined />}
+              className="user-collection-edit-btn"
+              disabled={isGuest || !isOwner}
+            >
+
             </Button>,
             isGuest || !isOwner,
             isGuest
-          )}
+          )} */}
 
-          {withTooltip(
+          <TooltipWrapper isDisabled={isGuest || !isOwner} isGuest={isGuest}>
             <Button
               type="primary"
               size="medium"
@@ -95,10 +125,8 @@ const UserCollectionItemCard = ({
               disabled={isGuest || !isOwner}
             >
               {/* Edit */}
-            </Button>,
-            isGuest || !isOwner,
-            isGuest
-          )}
+            </Button>
+          </TooltipWrapper>
         </div>
       </div>
     </div>

@@ -17,6 +17,7 @@ import "./FollowActions.css";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Search from "antd/es/transfer/search";
 import { formatFollowNumber } from "../components/util/helper";
+import TooltipWrapper from "../components/util/TooltipWrapper";
 
 const FollowActions = ({ userId, isGuest }) => {
   const [isFollowing, setIsFollowing] = useState(false);
@@ -32,8 +33,22 @@ const FollowActions = ({ userId, isGuest }) => {
   const [showFollowingModal, setShowFollowingModal] = useState(false);
   const [tooltipFollowersList, setTooltipFollowersList] = useState([]);
   const [tooltipFollowingList, setTooltipFollowingList] = useState([]);
+  const [isMobile, setIsMobile] = useState(false);
 
   const ITEMS_PER_PAGE = 10;
+
+  useEffect(() => {
+    // detect if the device is mobile
+    const checkIfMobile = () => {
+      setIsMobile(window.matchMedia("(pointer: coarse)").matches);
+    };
+
+    checkIfMobile();
+    window.addEventListener("resize", checkIfMobile);
+    return () => {
+      window.removeEventListener("resize", checkIfMobile);
+    };
+  }, []);
 
   useEffect(() => {
     const initializeFollowState = async () => {
@@ -147,11 +162,11 @@ const FollowActions = ({ userId, isGuest }) => {
     setShowFollowingModal(false);
   };
 
-  console.log("followersList: ", followersList);
-  console.log("hasmore: ", hasMoreFollowers);
+  // console.log("followersList: ", followersList);
+  // console.log("hasmore: ", hasMoreFollowers);
   return (
     <div className="follow-actions">
-      <Tooltip title={isGuest ? "Register or Login to follow" : ""}>
+      {/* <Tooltip title={isGuest ? "Register or Login to follow" : ""}>
         <Button
           disabled={isGuest}
           className={isFollowing ? "unfollow-btn" : "follow-btn"}
@@ -159,11 +174,25 @@ const FollowActions = ({ userId, isGuest }) => {
         >
           {isFollowing ? "Unfollow" : "Follow"}
         </Button>
-      </Tooltip>
+      </Tooltip> */}
+
+      <TooltipWrapper
+        tooltipContent={isGuest ? "Register or Login to follow" : ""}
+        isDisabled={isGuest}
+      >
+        <Button
+          disabled={isGuest}
+          className={isFollowing ? "unfollow-btn" : "follow-btn"}
+          onClick={isFollowing ? handleUnfollow : handleFollow}
+        >
+          {isFollowing ? "Unfollow" : "Follow"}
+        </Button>
+      </TooltipWrapper>
       <div className="counts-container">
         <Tooltip
           title={
-            !isGuest ? (
+            !isMobile &&
+            (!isGuest ? (
               tooltipFollowersList.length > 0 ? (
                 <div>
                   {tooltipFollowersList.map((follower, index) => (
@@ -175,7 +204,7 @@ const FollowActions = ({ userId, isGuest }) => {
               )
             ) : (
               ""
-            )
+            ))
           }
         >
           {isGuest ? (
@@ -192,9 +221,11 @@ const FollowActions = ({ userId, isGuest }) => {
             </div>
           )}
         </Tooltip>
+
         <Tooltip
           title={
-            !isGuest ? (
+            !isMobile &&
+            (!isGuest ? (
               tooltipFollowingList.length > 0 ? (
                 <div>
                   {tooltipFollowingList.map((following, index) => (
@@ -206,7 +237,7 @@ const FollowActions = ({ userId, isGuest }) => {
               )
             ) : (
               ""
-            )
+            ))
           }
         >
           {isGuest ? (
