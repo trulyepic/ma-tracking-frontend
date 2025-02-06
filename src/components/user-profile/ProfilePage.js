@@ -18,6 +18,20 @@ const ProfilePage = () => {
   const [loading, setLoading] = useState(true);
   const [collections, setCollections] = useState([]);
   const [isFollowing, setIsFollowing] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.matchMedia("(pointer: coarse)").matches);
+    };
+
+    checkIfMobile();
+    window.addEventListener("resize", checkIfMobile);
+
+    return () => {
+      window.removeEventListener("resize", checkIfMobile);
+    };
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -95,7 +109,7 @@ const ProfilePage = () => {
         <Avatar
           shape="square"
           className="profile-avatar"
-          size={200}
+          size={isMobile ? 150 : 200}
           src={userDetails.avatarImageLink || "/default-avatar.png"}
         />
 
