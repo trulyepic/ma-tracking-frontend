@@ -239,7 +239,7 @@ const ListCollectionsPage = () => {
           content="Explore collections shared by the community."
         />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="" />
+        <meta property="og:url" content="https://www.ex-hibt.com" />
       </Helmet>
       {/* <h1 className="list-collection-header">Public Collections</h1> */}
       <div className="list-collection-search-container">

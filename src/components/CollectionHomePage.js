@@ -24,6 +24,7 @@ import { DownOutlined, UpOutlined } from "@ant-design/icons";
 import CookieConsent from "./cookies/CookieConsent";
 import FollowActions from "../follow/FollowActions";
 import TooltipWrapper from "./util/TooltipWrapper";
+import { Helmet } from "react-helmet";
 
 const { Search } = Input;
 
@@ -508,15 +509,36 @@ const CollectionHomePage = () => {
     <div>
       <div className="user-home-page-container">
         <CookieConsent />
+        <Helmet>
+          <title>Ex-hibt</title>
+          <meta
+            name="description"
+            content="Explore public collections shared by the community. 
+                  Like, view, and navigate various collections."
+          />
+          <meta
+            name="keywords"
+            content="collections, public, browse, share, social, social media,
+                cool, manhwa, manga, like"
+          />
+          <meta property="og:title" content="Ex-hibt user home page" />
+          <meta
+            property="og:description"
+            content="Explore collections shared by the community."
+          />
+          <meta property="og:type" content="website" />
+          <meta property="og:url" content="https://www.ex-hibt.com" />
+        </Helmet>
         {isGuest && (
           <div className="user-home-main-header">
-            <span className="home-header-txt">Welcome to Ex-hibit</span>
-            <span className="home-main-sub-txt">
+            <span className="home-header-txt">Welcome to Ex-hibt</span>
+            {/* <span className="home-main-sub-txt">
               Start creating your collections now
             </span>
-            <span className="home-and">&</span>
+            <span className="home-and">&</span> */}
             <span className="home-sub-txt">
-              Explore the public collections from other users!
+              Create Your Images Collections & Explore Collections From Other
+              Users!
             </span>
           </div>
         )}
