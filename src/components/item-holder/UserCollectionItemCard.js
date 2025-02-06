@@ -86,7 +86,14 @@ const UserCollectionItemCard = ({
             isGuest
           )} */}
 
-          <TooltipWrapper isDisabled={isGuest || !isOwner} isGuest={isGuest}>
+          <TooltipWrapper
+            tooltipContent={
+              isGuest || !isOwner
+                ? "You can only use this feature for your own collections."
+                : "You must log in or register to use this feature."
+            }
+            isDisabled={isGuest || !isOwner}
+          >
             <Button
               type="primary"
               size="medium"
@@ -115,7 +122,14 @@ const UserCollectionItemCard = ({
             isGuest
           )} */}
 
-          <TooltipWrapper isDisabled={isGuest || !isOwner} isGuest={isGuest}>
+          <TooltipWrapper
+            tooltipContent={
+              isGuest || !isOwner
+                ? "You can only use this feature for your own collections."
+                : "You must log in or register to use this feature."
+            }
+            isDisabled={isGuest || !isOwner}
+          >
             <Button
               type="primary"
               size="medium"

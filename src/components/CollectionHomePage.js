@@ -557,8 +557,8 @@ const CollectionHomePage = () => {
                 <TooltipWrapper
                   tooltipContent={
                     isGuest || !isOwner
-                      ? "You must log in or register to use this feature."
-                      : "You can only use this feature for your own collections."
+                      ? "You can only use this feature for your own collections."
+                      : "You must log in or register to use this feature."
                   }
                   isDisabled={isGuest || !isOwner}
                 >
@@ -584,8 +584,8 @@ const CollectionHomePage = () => {
               <TooltipWrapper
                 tooltipContent={
                   isGuest || !isOwner
-                    ? "You must log in or register to use this feature."
-                    : "You can only use this feature for your own collections."
+                    ? "You can only use this feature for your own collections."
+                    : "You must log in or register to use this feature."
                 }
                 isDisabled={isGuest || !isOwner}
               >
@@ -634,8 +634,8 @@ const CollectionHomePage = () => {
               <TooltipWrapper
                 tooltipContent={
                   isGuest || !isOwner
-                    ? "You must log in or register to use this feature."
-                    : "You can only use this feature for your own collections."
+                    ? "You can only use this feature for your own collections."
+                    : "You must log in or register to use this feature."
                 }
                 isDisabled={isGuest || !isOwner}
               >
@@ -692,8 +692,8 @@ const CollectionHomePage = () => {
               <TooltipWrapper
                 tooltipContent={
                   isGuest || !isOwner
-                    ? "You must log in or register to use this feature."
-                    : "You can only use this feature for your own collections."
+                    ? "You can only use this feature for your own collections."
+                    : "You must log in or register to use this feature."
                 }
                 isDisabled={isGuest || !isOwner}
               >

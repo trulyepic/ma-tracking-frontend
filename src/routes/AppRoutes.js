@@ -14,6 +14,7 @@ import Settings from "../components/settings/Settings";
 import ProfilePage from "../components/user-profile/ProfilePage";
 import ForgotPassword from "../components/sign-in-register/ForgotPassword";
 import ConfirmEmailPage from "../components/sign-in-register/ConfirmEmailPage";
+import CookieNotice from "../components/cookies/CookieNotice";
 
 const AppRoutes = () => {
   return (
@@ -34,6 +35,7 @@ const AppRoutes = () => {
       <Route path="/user-profile/:id" element={<ProfilePage />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/confirm-email" element={<ConfirmEmailPage />} />
+      <Route path="/cookie-policy" element={<CookieNotice />} />
     </Routes>
   );
 };
