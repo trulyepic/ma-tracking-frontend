@@ -22,6 +22,20 @@ const Header = () => {
   const [userDetails, setUserDetails] = useState(null);
   const [isAvatarModalVisible, setAvatarModalVisible] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.matchMedia("(pointer: coarse)").matches);
+    };
+
+    checkIfMobile();
+    window.addEventListener("resize", checkIfMobile);
+
+    return () => {
+      window.removeEventListener("resize", checkIfMobile);
+    };
+  }, []);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -120,7 +134,7 @@ const Header = () => {
           {isAuthenticated && userDetails?.avatarImageLink ? (
             <Avatar
               src={`${userDetails.avatarImageLink}`}
-              size={isMobileMenuOpen ? 70 : 40}
+              size={isMobile ? 70 : 40}
               icon={!userDetails?.avatarImageLink && <UserOutlined />}
               onError={() => {
                 message.error("Failed to load avatar image.");
@@ -131,7 +145,7 @@ const Header = () => {
             <Avatar
               className="avatar"
               icon={<UserOutlined />}
-              size={isMobileMenuOpen ? 70 : 40}
+              size={isMobile ? 70 : 40}
             />
           )}
           {/* <UserOutlined
