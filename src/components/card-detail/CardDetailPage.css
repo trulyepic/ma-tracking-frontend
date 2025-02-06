@@ -42,6 +42,7 @@
   z-index: 1;
   overflow: hidden;
   padding: 20px;
+  box-sizing: border-box;
 }
 
 /* antd section */
@@ -68,4 +69,35 @@
 
 .card-detail-modal .anticon {
   color: #ffffff !important;
+}
+
+/* Mobile */
+@media screen and (max-width: 768px) {
+  .card-detail-container {
+    padding: 15px;
+    max-width: 90%;
+    margin: 10px auto;
+  }
+
+  .card-title {
+    font-size: 18px !important;
+    margin-bottom: 10px;
+  }
+
+  .card-cover {
+    width: 100%;
+  }
+
+  .card-content {
+    font-size: 12px;
+  }
+
+  .card-long-content {
+    font-size: 13px;
+  }
+
+  .disqus-section {
+    padding: 10px;
+    max-width: 100%;
+  }
 }
