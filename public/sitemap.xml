@@ -50,22 +50,4 @@
         <lastmod>2024-02-06</lastmod>
         <priority>0.4</priority>
     </url>
-    
-    <!-- Dynamic Routes (for user & collections) -->
-    <url>
-        <loc>https://www.ex-hibt.com/user-homepage/{id}</loc>
-        <priority>0.6</priority>
-    </url>
-    <url>
-        <loc>https://www.ex-hibt.com/collection-homepage/{id}</loc>
-        <priority>0.6</priority>
-    </url>
-    <url>
-        <loc>https://www.ex-hibt.com/card/{id}</loc>
-        <priority>0.5</priority>
-    </url>
-    <url>
-        <loc>https://www.ex-hibt.com/edititem/{id}</loc>
-        <priority>0.5</priority>
-    </url>
 </urlset>
