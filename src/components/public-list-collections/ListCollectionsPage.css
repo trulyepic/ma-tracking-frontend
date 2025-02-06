@@ -100,6 +100,7 @@
 .list-collection-search-container {
   display: flex;
   justify-content: center;
+  gap: 15px;
 }
 
 .list-collection-search {
@@ -113,6 +114,35 @@
 
 .list-collection-search .anticon:hover {
   color: #007bff !important;
+}
+
+.ant-select-dropdown {
+  background-color: #1a1a1d !important;
+}
+
+.list-collection-filter .ant-select-selection-placeholder {
+  color: #b3b3b3 !important;
+}
+
+/* Change dropdown text color */
+.ant-select-dropdown .ant-select-item {
+  color: rgb(216, 216, 216) !important;
+}
+
+/* Change hover effect on dropdown items */
+.ant-select-dropdown .ant-select-item-option-active {
+  /* background-color: #333333 !important; */
+  color: #007bff !important;
+}
+
+.ant-select-dropdown
+  .ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
+  background-color: transparent !important;
+}
+
+/* Change dropdown arrow icon color */
+.list-collection-filter .ant-select-arrow {
+  color: #fff !important;
 }
 
 .ant-pagination {

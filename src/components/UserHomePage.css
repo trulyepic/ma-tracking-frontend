@@ -241,26 +241,32 @@ html {
   margin-bottom: 15px;
 }
 
-.sort-buttons button {
-  padding: 6px 14px;
-  border-radius: 15px;
-  background-color: transparent;
-  color: #ffffff;
-  font-size: 16px;
+.sort-buttons Button {
+  padding: 6px 14px !important;
+  border-radius: 15px !important;
+  background-color: transparent !important;
+  color: #dcdcdc !important;
+  font-size: 16px !important;
   cursor: pointer;
-  transition: background-color 0.3, color 0.3s;
+  /* transition: background-color 0.3, color 0.3s; */
+  border-color: #cbcbcb;
 }
 
-.sort-buttons button.active {
-  background-color: #007bff;
+.sort-buttons Button.active {
+  background-color: #007bff !important;
   color: #ffffff;
   font-weight: bold;
   border: none;
 }
 
-.sort-buttons button:not(.active):hover {
-  background-color: rgba(255, 255, 255, 0.1);
+.sort-buttons Button:not(.active):hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
 }
+
+/* .sort-buttons,
+.ant-btn-variant-outlined:not(:disabled):not(.ant-btn-disabled):hover {
+  border-color: none !important;
+} */
 
 /* card and grid items */
 .user-collection-grid {

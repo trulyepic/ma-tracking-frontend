@@ -10,7 +10,7 @@ import {
   unlikeCollection,
   unlikeItem,
 } from "../../apis/api";
-import { Avatar, Button, List, message, Pagination } from "antd";
+import { Avatar, Button, List, message, Pagination, Select } from "antd";
 import "./ListCollectionsPage.css";
 import moment from "moment";
 import { HeartFilled, HeartOutlined } from "@ant-design/icons";
@@ -19,6 +19,7 @@ import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import CookieConsent from "../cookies/CookieConsent";
 import Search from "antd/es/input/Search";
+import { Option } from "antd/es/mentions";
 
 const ListCollectionsPage = () => {
   const navigate = useNavigate();
@@ -30,6 +31,7 @@ const ListCollectionsPage = () => {
   const [pageSize, setPageSize] = useState(10);
   const [searchResults, setSearchResults] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [filter, setFilter] = useState(null);
 
   useEffect(() => {
     const fetchUserDetails = async () => {
@@ -168,10 +170,50 @@ const ListCollectionsPage = () => {
     });
   };
 
+  const applyFilter = (data) => {
+    if (!filter) {
+      // if no filter is applied, place the logged-in user's collection on top
+      return data.sort((a, b) => {
+        if (a.isOwner && !b.isOwner) return -1;
+        if (!a.isOwner && b.isOwner) return 1;
+        return 0;
+      });
+    }
+
+    switch (filter) {
+      case "name":
+        return data.sort((a, b) => a.userName.localeCompare(b.userName));
+      case "followers":
+        return data.sort((a, b) => b.followersCount - a.followersCount);
+      case "newest":
+        return data.sort(
+          (a, b) =>
+            new Date(b.publicViewCreatedDate) -
+            new Date(a.publicViewCreatedDate)
+        );
+      case "oldest":
+        return data.sort(
+          (a, b) =>
+            new Date(a.publicViewCreatedDate) -
+            new Date(b.publicViewCreatedDate)
+        );
+      case "likes":
+        return data.sort((a, b) => b.likesCount - a.likesCount);
+      default:
+        return data;
+    }
+  };
+
+  const filteredUsers = applyFilter(searchQuery ? searchResults : publicUsers);
+  const paginatedUsers = filteredUsers.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
+
   // calculate paginated data
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
-  const paginatedUsers = publicUsers.slice(startIndex, endIndex);
+  //  const paginatedUsers = publicUsers.slice(startIndex, endIndex);
 
   const displayUsers = searchQuery ? searchResults : paginatedUsers;
 
@@ -208,6 +250,23 @@ const ListCollectionsPage = () => {
           allowClear
           onSearch={handleSearch}
         />
+
+        <Select
+          className="list-collection-filter"
+          size="large"
+          // defaultValue=" "
+          value={filter}
+          onChange={(value) => setFilter(value || null)}
+          allowClear
+          placeholder="Filter by..."
+          // style={{ width: 150 }}
+        >
+          <Option value="name">Collection Name</Option>
+          <Option value="followers">Most Followers</Option>
+          <Option value="newest">Newest</Option>
+          <Option value="oldest">Oldest</Option>
+          <Option value="likes">Most Liked</Option>
+        </Select>
       </div>
       <List
         loading={loading}
@@ -273,9 +332,9 @@ const ListCollectionsPage = () => {
         current={currentPage}
         pageSize={pageSize}
         total={publicUsers.length}
-        onChange={(page, pageSize) => {
+        onChange={(page, size) => {
           setCurrentPage(page);
-          setPageSize(pageSize);
+          setPageSize(size);
         }}
         showSizeChanger
       />
