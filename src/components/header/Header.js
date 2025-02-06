@@ -120,7 +120,7 @@ const Header = () => {
           {isAuthenticated && userDetails?.avatarImageLink ? (
             <Avatar
               src={`${userDetails.avatarImageLink}`}
-              size={40}
+              size={isMobileMenuOpen ? 70 : 40}
               icon={!userDetails?.avatarImageLink && <UserOutlined />}
               onError={() => {
                 message.error("Failed to load avatar image.");
@@ -128,7 +128,11 @@ const Header = () => {
               }}
             />
           ) : (
-            <Avatar className="avatar" icon={<UserOutlined />} size={40} />
+            <Avatar
+              className="avatar"
+              icon={<UserOutlined />}
+              size={isMobileMenuOpen ? 70 : 40}
+            />
           )}
           {/* <UserOutlined
             style={{ fontSize: "24px", cursor: "pointer", color: "#ffffff" }}
