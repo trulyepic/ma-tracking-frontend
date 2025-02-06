@@ -89,7 +89,7 @@ const UserCollectionItemCard = ({
           <TooltipWrapper
             tooltipContent={
               isGuest || !isOwner
-                ? "You can only use this feature for your own collections."
+                ? "Must be your collections."
                 : "You must log in or register to use this feature."
             }
             isDisabled={isGuest || !isOwner}
@@ -125,7 +125,7 @@ const UserCollectionItemCard = ({
           <TooltipWrapper
             tooltipContent={
               isGuest || !isOwner
-                ? "You can only use this feature for your own collections."
+                ? "Must be your collections."
                 : "You must log in or register to use this feature."
             }
             isDisabled={isGuest || !isOwner}
