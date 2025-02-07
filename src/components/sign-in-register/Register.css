@@ -24,6 +24,20 @@ main {
   padding: 250px; /* Prevents content from touching edges on small screens */
 }
 
+.verification-txt {
+  color: #cfcfcf;
+}
+
+.verification-input {
+  font-weight: 600 !important;
+  width: 80px !important;
+  margin-bottom: 20px !important;
+}
+
+.verification-input::placeholder {
+  color: #bfbfbf !important;
+}
+
 .register-container h2 {
   color: #ffffff;
   text-align: center;

@@ -432,6 +432,17 @@ export const confirmEmail = async (token) => {
   }
 };
 
+export const verifyEmailCode = async (code) => {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/confirm-email`, {
+      code,
+    });
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || "Verification failed";
+  }
+};
+
 export const resendEmailConfirmation = async (email, provider = "gmail") => {
   try {
     const response = await axios.post(

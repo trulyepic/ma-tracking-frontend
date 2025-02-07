@@ -87,6 +87,7 @@ const SignIn = () => {
           ),
           className: "signin-modals",
         });
+        navigate("/confirm-email");
       } else if (
         errorMessage ===
         "This account was registered using Google. Please sign in with Google."
