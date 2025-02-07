@@ -76,7 +76,7 @@ const ConfirmEmailPage = () => {
           state: { email, showChangePassword: true },
         });
       } else {
-        navigate("/signin"); // Redirect to homepage after successful confirmation
+        navigate("/signin");
       }
     } catch (error) {
       message.error(
