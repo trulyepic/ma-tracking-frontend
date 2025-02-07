@@ -478,3 +478,15 @@ export const googleSignIn = async (idToken) => {
     throw error.response?.data || "Google Sign-In failed";
   }
 };
+
+export const forgotPassword = async (email) => {
+  return axios.post(`${API_BASE_URL}/forgot-password`, { email });
+};
+
+export const verifyResetCode = async (code) => {
+  return axios.post(`${API_BASE_URL}/verify-reset-code`, { code });
+};
+
+export const resetPassword = async (email, newPassword) => {
+  return axios.post(`${API_BASE_URL}/reset-password`, { email, newPassword });
+};

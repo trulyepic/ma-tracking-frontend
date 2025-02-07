@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useSearchParams, useNavigate, useLocation } from "react-router-dom";
 import { confirmEmail, verifyEmailCode } from "../../apis/api";
 import { Result, Spin, Button, Input, message } from "antd";
 import { CheckCircleFilled, CheckOutlined } from "@ant-design/icons";
 
 const ConfirmEmailPage = () => {
+  const location = useLocation();
+  const email = location.state?.email;
+  const fromForgotPassword = location.state?.fromForgotPassword;
+
   const [status, setStatus] = useState("pending"); // Default: Waiting for confirmation
   // const [message, setMessage] = useState(
   //   "Processing your email confirmation..."
@@ -65,10 +69,19 @@ const ConfirmEmailPage = () => {
     setLoading(true);
     try {
       await verifyEmailCode(code);
-      message.success("Email confirmed successfully!");
-      navigate("/signin"); // Redirect to homepage after successful confirmation
+      message.success("Verification successfully!");
+
+      if (fromForgotPassword) {
+        navigate("/forgot-password", {
+          state: { email, showChangePassword: true },
+        });
+      } else {
+        navigate("/signin"); // Redirect to homepage after successful confirmation
+      }
     } catch (error) {
-      message.error(error || "Invalid or expired verification code.");
+      message.error(
+        error.response?.data || "Invalid or expired verification code."
+      );
     } finally {
       setLoading(false);
     }
