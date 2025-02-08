@@ -1,0 +1,54 @@
+.comment-policy-container {
+  max-width: 800px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #1f1f28;
+  color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: left;
+}
+
+.comment-policy-container h1 {
+  font-size: 2rem;
+  color: #39a1ff;
+}
+
+.comment-policy-container h2,
+.comment-policy-container h3 {
+  color: #32a284;
+  margin-top: 20px;
+}
+
+.comment-policy-container p {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.comment-policy-container ul {
+  padding-left: 20px;
+}
+
+.comment-policy-container a {
+  color: #39a1ff;
+  text-decoration: none;
+}
+
+.comment-policy-container a:hover {
+  text-decoration: underline;
+}
+
+.comment-back-btn {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #32a284;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.comment-back-btn:hover {
+  background-color: #2a8d6f;
+}

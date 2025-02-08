@@ -24,9 +24,10 @@ const CardDetailPage = () => {
   const { title, imageUrl, content, longContent, isGuest, isOwner } =
     state.itemData;
 
-  const disqusShortname = "star-k-wiki";
+  // url: `http://localhost:3001/card/${id}`,
+  const disqusShortname = "ex-hibt";
   const disqusConfig = {
-    url: `http://localhost:3001/card/${id}`,
+    url: `https://www.ex-hibt.com/card/${id}`,
     identifier: id,
     title: title,
   };

@@ -15,6 +15,7 @@ import ProfilePage from "../components/user-profile/ProfilePage";
 import ForgotPassword from "../components/sign-in-register/ForgotPassword";
 import ConfirmEmailPage from "../components/sign-in-register/ConfirmEmailPage";
 import CookieNotice from "../components/cookies/CookieNotice";
+import CommentPolicy from "../components/comment/CommentPolicy";
 
 const AppRoutes = () => {
   return (
@@ -36,6 +37,7 @@ const AppRoutes = () => {
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/confirm-email" element={<ConfirmEmailPage />} />
       <Route path="/cookie-policy" element={<CookieNotice />} />
+      <Route path="/comment-policy" element={<CommentPolicy />} />
     </Routes>
   );
 };
