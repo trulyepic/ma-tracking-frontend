@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./CommentPolicy.css";
 
 const CommentPolicy = () => {
@@ -68,9 +68,9 @@ const CommentPolicy = () => {
         .
       </p>
 
-      <button className="comment-back-btn" onClick={() => navigate(-1)}>
-        Back Previous Page
-      </button>
+      <Link to="/">
+        <button className="comment-back-btn">Back to Home</button>
+      </Link>
     </div>
   );
 };
