@@ -16,6 +16,7 @@ import ForgotPassword from "../components/sign-in-register/ForgotPassword";
 import ConfirmEmailPage from "../components/sign-in-register/ConfirmEmailPage";
 import CookieNotice from "../components/cookies/CookieNotice";
 import CommentPolicy from "../components/comment/CommentPolicy";
+import NotFound from "../components/not-found/NotFound";
 
 const AppRoutes = () => {
   return (
@@ -26,8 +27,8 @@ const AppRoutes = () => {
       <Route path="/additem" element={<AddItem />} />
       <Route path="/edititem/:id" element={<EditItem />} />
       <Route path="/card/:id" element={<CardDetailPage />} />
+      <Route path="*" element={<NotFound />} /> {/* Handles unknown routes */}
       <Route path="/list-collections" element={<ListCollectionsPage />} />
-
       {/* Dynamic route for user homepage */}
       <Route path="/user-homepage/:id" element={<UserHomePage />} />
       <Route path="/collection-homepage/:id" element={<CollectionHomePage />} />
