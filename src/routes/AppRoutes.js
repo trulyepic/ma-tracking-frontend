@@ -20,7 +20,7 @@ import NotFound from "../components/not-found/NotFound";
 
 const AppRoutes = () => {
   return (
-    <Routes>
+    <Routes basename="/">
       <Route path="/" element={<CollectionHomePage />} />
       <Route path="/signin" element={<SignIn />} />
       <Route path="/register" element={<Register />} />
