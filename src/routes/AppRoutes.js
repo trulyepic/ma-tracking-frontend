@@ -20,9 +20,9 @@ import NotFound from "../components/not-found/NotFound";
 import useFixTrailingSlash from "../components/util/useFixTrailingSlash";
 
 const AppRoutes = () => {
-  // const isRedirecting = useFixTrailingSlash();
+  const isRedirecting = useFixTrailingSlash();
 
-  // if (isRedirecting) return null; // Prevent rendering until redirect is complete
+  if (isRedirecting) return null; // Prevent rendering until redirect is complete
 
   return (
     <Routes basename="/">
