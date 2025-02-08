@@ -8,12 +8,10 @@ import "./CardDetailPage.css";
 import { DiscussionEmbed } from "disqus-react";
 import { deleteUserItem } from "../../apis/api";
 import NotFound from "../not-found/NotFound";
-import useFixTrailingSlash from "../util/useFixTrailingSlash";
 
 const { Title, Paragraph } = Typography;
 
 const CardDetailPage = () => {
-  useFixTrailingSlash();
   const { state } = useLocation();
   const navigate = useNavigate();
   const { id } = useParams();
