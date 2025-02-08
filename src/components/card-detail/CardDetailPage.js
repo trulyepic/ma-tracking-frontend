@@ -8,27 +8,18 @@ import "./CardDetailPage.css";
 import { DiscussionEmbed } from "disqus-react";
 import { deleteUserItem } from "../../apis/api";
 import NotFound from "../not-found/NotFound";
+import useFixTrailingSlash from "../util/useFixTrailingSlash";
 
 const { Title, Paragraph } = Typography;
 
 const CardDetailPage = () => {
+  useFixTrailingSlash();
   const { state } = useLocation();
   const navigate = useNavigate();
   const { id } = useParams();
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [rotation, setRotation] = useState(0);
-
-  // if (!state || !state.itemData) {
-  //   return <div>Card not found!</div>;
-  // }
-
-  // Redirect to NotFound if no state exists or ID in URL doesn't match state.itemData.id
-  // useEffect(() => {
-  //   if (!state || !state.itemData || state.itemData.id !== id) {
-  //     navigate("/*", { replace: true });
-  //   }
-  // }, [id, state, navigate]);
 
   if (!state || !state.itemData) {
     return <NotFound />;

@@ -5,8 +5,11 @@ import { updateUserItem } from "../../apis/api";
 import Item from "antd/es/list/Item";
 import { UploadOutlined } from "@ant-design/icons";
 import UploadEditImage from "./UploadEditImage";
+import useFixTrailingSlash from "../util/useFixTrailingSlash";
 
 const EditItem = () => {
+  useFixTrailingSlash();
+
   const navigate = useNavigate();
   const { id } = useParams(); // Get item ID from URL params
   const location = useLocation();
