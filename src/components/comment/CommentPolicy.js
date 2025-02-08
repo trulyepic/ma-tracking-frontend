@@ -68,7 +68,10 @@ const CommentPolicy = () => {
         .
       </p>
 
-      <button className="comment-back-btn" onClick={() => navigate("/")}>
+      <button
+        className="comment-back-btn"
+        onClick={() => navigate("/collection-homepage")}
+      >
         Back to Home
       </button>
     </div>
