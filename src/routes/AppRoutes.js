@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 // import UserHomePage from "../components/UserHomePage1";
 import SignIn from "../components/sign-in-register/SignIn";
@@ -17,8 +17,14 @@ import ConfirmEmailPage from "../components/sign-in-register/ConfirmEmailPage";
 import CookieNotice from "../components/cookies/CookieNotice";
 import CommentPolicy from "../components/comment/CommentPolicy";
 import NotFound from "../components/not-found/NotFound";
+import useFixTrailingSlash from "../components/util/useFixTrailingSlash";
 
 const AppRoutes = () => {
+  const [ready, setReady] = useState(false);
+  const isRedirecting = useFixTrailingSlash(setReady);
+
+  if (!ready || isRedirecting) return null; // Prevent rendering 404 before redirect is done
+
   return (
     <Routes basename="/">
       <Route path="/" element={<CollectionHomePage />} />
