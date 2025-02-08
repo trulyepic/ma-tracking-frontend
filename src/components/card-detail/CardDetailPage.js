@@ -19,9 +19,9 @@ const CardDetailPage = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [rotation, setRotation] = useState(0);
 
-  if (!state || !state.itemData) {
-    return <NotFound />;
-  }
+  // if (!state || !state.itemData) {
+  //   return <NotFound />;
+  // }
   const { title, imageUrl, content, longContent, isGuest, isOwner } =
     state.itemData;
 

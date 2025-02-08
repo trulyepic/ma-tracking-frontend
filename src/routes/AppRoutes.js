@@ -20,10 +20,9 @@ import NotFound from "../components/not-found/NotFound";
 import useFixTrailingSlash from "../components/util/useFixTrailingSlash";
 
 const AppRoutes = () => {
-  const [ready, setReady] = useState(false);
-  const isRedirecting = useFixTrailingSlash(setReady);
+  const isRedirecting = useFixTrailingSlash();
 
-  if (!ready || isRedirecting) return null; // Prevent rendering 404 before redirect is done
+  if (isRedirecting) return null; // Prevent rendering until redirect is complete
 
   return (
     <Routes basename="/">

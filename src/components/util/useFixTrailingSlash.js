@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-const useFixTrailingSlash = (setReady) => {
+const useFixTrailingSlash = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [isRedirecting, setIsRedirecting] = useState(true);
+  const [isRedirecting, setIsRedirecting] = useState(false);
 
   useEffect(() => {
     if (location.pathname.endsWith("/") && location.pathname !== "/") {
+      setIsRedirecting(true);
       navigate(location.pathname.slice(0, -1), { replace: true });
     } else {
-      setIsRedirecting(false); // Only allow rendering after fixing the URL
-      setReady(true);
+      setIsRedirecting(false);
     }
-  }, [location, navigate, setReady]);
+  }, [location, navigate]);
 
   return isRedirecting;
 };
