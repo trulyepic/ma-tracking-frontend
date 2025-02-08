@@ -490,3 +490,13 @@ export const verifyResetCode = async (code) => {
 export const resetPassword = async (email, newPassword) => {
   return axios.post(`${API_BASE_URL}/reset-password`, { email, newPassword });
 };
+
+export const fetchCardById = async (id) => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/item/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching card:", error);
+    return null;
+  }
+};

@@ -1,12 +1,12 @@
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { Button, Card, Image, message, Modal, Typography } from "antd";
+import { Button, Card, Image, message, Modal, Spin, Typography } from "antd";
 // import Paragraph from "antd/es/skeleton/Paragraph";
 // import Title from "antd/es/skeleton/Title";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import "./CardDetailPage.css";
 import { DiscussionEmbed } from "disqus-react";
-import { deleteUserItem } from "../../apis/api";
+import { deleteUserItem, fetchCardById } from "../../apis/api";
 import NotFound from "../not-found/NotFound";
 
 const { Title, Paragraph } = Typography;
@@ -15,15 +15,46 @@ const CardDetailPage = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
   const { id } = useParams();
-
+  const [cardData, setCardData] = useState(state?.itemData || null);
+  const [loading, setLoading] = useState(!state?.itemData);
+  const [error, setError] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [rotation, setRotation] = useState(0);
 
-  if (!state || !state.itemData) {
+  useEffect(() => {
+    if (!cardData) {
+      setLoading(true);
+      fetchCardById(id)
+        .then((data) => {
+          if (!data) {
+            setError(true);
+          } else {
+            setCardData(data);
+          }
+        })
+        .catch(() => setError(true))
+        .finally(() => setLoading(false));
+    }
+  }, [id, cardData]);
+
+  if (loading) {
+    return (
+      <Spin size="large" style={{ display: "block", margin: "50px auto" }} />
+    );
+  }
+
+  // if (!state || !state.itemData) {
+  //   return <NotFound />;
+  // }
+
+  if (error || !cardData) {
     return <NotFound />;
   }
-  const { title, imageUrl, content, longContent, isGuest, isOwner } =
-    state.itemData;
+
+  // const { title, imageUrl, content, longContent, isGuest, isOwner } =
+  //   state.itemData;
+
+  const { title, imageUrl, content, longContent } = cardData;
 
   // url: `http://localhost:3001/card/${id}`,
   const disqusShortname = "ex-hibt";
