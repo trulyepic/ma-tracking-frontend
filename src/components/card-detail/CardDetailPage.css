@@ -45,6 +45,15 @@
   box-sizing: border-box;
 }
 
+/* .disqus-section button {
+  background-color: #39a1ff !important;
+  color: white !important;
+} */
+
+#disqus_thread a {
+  color: #39a1ff !important;
+}
+
 /* antd section */
 .ant-card-body {
   background-color: #1a1a1d !important;
