@@ -39,7 +39,8 @@ main {
 }
 
 .verification-input::placeholder {
-  color: #bfbfbf !important;
+  color: #bfbfbf98 !important;
+  letter-spacing: normal !important;
 }
 
 .register-container h2 {
