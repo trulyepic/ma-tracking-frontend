@@ -82,7 +82,7 @@ const ListCollectionsPage = () => {
         setPublicUsers(sortedUsers);
       } catch (error) {
         console.error("Error fetching public collections:", error);
-        message.error("Failed to fetch public collections.");
+        // message.error("Failed to fetch public collections.");
       } finally {
         setLoading(false);
       }
