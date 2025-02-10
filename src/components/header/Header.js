@@ -125,8 +125,21 @@ const Header = () => {
       </div>
       <div>
         <nav className={`app-header-nav ${isMobileMenuOpen ? "open" : ""}`}>
-          <Link to="/"> Home</Link>
-          <Link to="/list-collections">Public Collections</Link>
+          <Link
+            to="/"
+            className={location.pathname === "/" ? "active-link" : ""}
+          >
+            {" "}
+            Home
+          </Link>
+          <Link
+            to="/list-collections"
+            className={
+              location.pathname === "/list-collections" ? "active-link" : ""
+            }
+          >
+            Public Collections
+          </Link>
         </nav>
       </div>
       <div className="app-header-user-icon">
@@ -162,10 +175,20 @@ const Header = () => {
       {isMobileMenuOpen && (
         <div className="mobile-menu-overlay" onClick={toggleMobileMenu}>
           <nav className="mobile-nav">
-            <Link to="/" onClick={toggleMobileMenu}>
+            <Link
+              to="/"
+              onClick={toggleMobileMenu}
+              className={location.pathname === "/" ? "active-link" : ""}
+            >
               Home
             </Link>
-            <Link to="/list-collections" onClick={toggleMobileMenu}>
+            <Link
+              to="/list-collections"
+              onClick={toggleMobileMenu}
+              className={
+                location.pathname === "/list-collections" ? "active-link" : ""
+              }
+            >
               Public Collections
             </Link>
           </nav>
