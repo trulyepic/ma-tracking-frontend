@@ -140,6 +140,13 @@ const Header = () => {
           >
             Public Collections
           </Link>
+          <a
+            href="https://discord.gg/vkEwmRaJ"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Discord Server
+          </a>
         </nav>
       </div>
       <div className="app-header-user-icon">
@@ -191,6 +198,14 @@ const Header = () => {
             >
               Public Collections
             </Link>
+
+            <a
+              href="https://discord.gg/vkEwmRaJ"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Discord Server
+            </a>
           </nav>
         </div>
       )}
