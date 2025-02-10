@@ -1,6 +1,6 @@
 import { GoogleOutlined } from "@ant-design/icons";
 import { Button, Form, Input, Divider, Modal, Select } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   getUserDetails,
@@ -138,6 +138,20 @@ const SignIn = () => {
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
+
+  useEffect(() => {
+    const customizeGoogleButton = () => {
+      const googleBtn = document.querySelector(".nsm7Bb-HzV7m-LgbsSe");
+      if (googleBtn) {
+        googleBtn.style.backgroundColor = "transparent";
+        googleBtn.style.color = "#ffffff";
+        googleBtn.style.border = "1px solid #a7a7a7";
+        googleBtn.style.borderRadius = "8px";
+      }
+    };
+
+    setTimeout(customizeGoogleButton, 1000); // Delay to allow Google to load
+  }, []);
 
   // console.log("provider selectedProvider: ", selectedProvider);
   // console.log("emailForResend: ", emailForResend);

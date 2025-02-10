@@ -179,14 +179,14 @@ main {
   margin-top: 10px !important;
 }
 
-/* .google-signin-container div {
+.google-signin-container div {
   background-color: transparent !important;
   color: #ffffff !important;
   border-color: #a7a7a7 !important;
   border-radius: 8px !important;
-} */
+}
 
-.nsm7Bb-HzV7m-LgbsSe {
+/* .nsm7Bb-HzV7m-LgbsSe {
   all: unset;
   background-color: transparent !important;
   color: #ffffff !important;
@@ -194,7 +194,7 @@ main {
   border-radius: 8px !important;
   font-size: 14px !important;
   height: 40px !important;
-}
+} */
 
 /* .google-signin-container:hover {
   background-color: rgba(255, 255, 255, 0.1) !important;
