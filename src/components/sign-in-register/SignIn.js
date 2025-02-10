@@ -5,11 +5,16 @@ import { Link, useNavigate } from "react-router-dom";
 import {
   getUserDetails,
   googleSignIn,
+  googleSignInV2,
   loginUser,
   resendEmailConfirmation,
 } from "../../apis/api";
 import myLogo from "../../components/images/logo/myLogo.png";
-import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
+import {
+  GoogleLogin,
+  GoogleOAuthProvider,
+  useGoogleLogin,
+} from "@react-oauth/google";
 
 const GOOGLE_CLIENT_ID =
   "369568751036-h0k3gdhc6qb1idvtorg9lut69lml04t2.apps.googleusercontent.com";
@@ -118,10 +123,31 @@ const SignIn = () => {
     }
   };
 
-  const handleGoogleSuccess = async (credentialResponse) => {
+  const handleGoogleSuccess = async (tokenResponse) => {
+    console.log("Google Access Token:", tokenResponse.access_token);
+
+    if (!tokenResponse || !tokenResponse.access_token) {
+      console.error("Google Sign-In Error: Invalid response", tokenResponse);
+      Modal.error({
+        title: "Google Sign-in Failed",
+        content: "Invalid response from Google. Please try again.",
+        className: "signin-modals",
+      });
+      return;
+    }
+
     try {
-      const token = credentialResponse.credential;
-      const response = await googleSignIn(token);
+      const accessToken = tokenResponse.access_token;
+      console.log("Sending Access Token to Backend:", accessToken);
+
+      // Send access token to backend
+      const response = await googleSignInV2(accessToken);
+
+      if (!response || !response.token) {
+        throw new Error("Invalid response from backend.");
+      }
+
+      // Store JWT and navigate
       localStorage.setItem("authToken", response.token);
       const userDetails = await getUserDetails();
       navigate("/", { state: { userDetails } });
@@ -129,7 +155,7 @@ const SignIn = () => {
       console.error("Google Sign-in failed:", error);
       Modal.error({
         title: "Google Sign-in Failed",
-        content: "Something went wrong.",
+        content: error?.message || "Something went wrong. Please try again.",
         className: "signin-modals",
       });
     }
@@ -139,19 +165,30 @@ const SignIn = () => {
     console.log("Failed:", errorInfo);
   };
 
-  useEffect(() => {
-    const customizeGoogleButton = () => {
-      const googleBtn = document.querySelector(".nsm7Bb-HzV7m-LgbsSe");
-      if (googleBtn) {
-        googleBtn.style.backgroundColor = "transparent";
-        googleBtn.style.color = "#ffffff";
-        googleBtn.style.border = "1px solid #a7a7a7";
-        googleBtn.style.borderRadius = "8px";
-      }
-    };
+  const GoogleSignInButton = ({ onSuccess, onError }) => {
+    const login = useGoogleLogin({
+      onSuccess: async (tokenResponse) => {
+        try {
+          await onSuccess(tokenResponse);
+        } catch (error) {
+          onError(error);
+        }
+      },
+      onError: () => onError(new Error("Google Sign-In Failed")),
+      scope: "openid email profile",
+    });
 
-    setTimeout(customizeGoogleButton, 1000); // Delay to allow Google to load
-  }, []);
+    return (
+      <Button
+        icon={<GoogleOutlined className="google-icon" />}
+        block
+        className="custom-google-btn"
+        onClick={() => login()}
+      >
+        Log in with Google
+      </Button>
+    );
+  };
 
   // console.log("provider selectedProvider: ", selectedProvider);
   // console.log("emailForResend: ", emailForResend);
@@ -223,7 +260,7 @@ const SignIn = () => {
             </Button> */}
 
               {/* Google Sign-in Button using Ant Design */}
-              <div className="google-signin-container">
+              {/* <div className="google-signin-container">
                 <GoogleLogin
                   theme="outline"
                   text="signin"
@@ -239,6 +276,12 @@ const SignIn = () => {
                       className: "signin-modals",
                     })
                   }
+                />
+              </div> */}
+              <div className="google-signin-container">
+                <GoogleSignInButton
+                  onSuccess={handleGoogleSuccess}
+                  onError={(error) => console.error(error)}
                 />
               </div>
             </Form.Item>

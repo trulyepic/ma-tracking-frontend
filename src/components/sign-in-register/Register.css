@@ -179,11 +179,30 @@ main {
   margin-top: 10px !important;
 }
 
-.google-signin-container div {
+/* .google-signin-container div {
   background-color: transparent !important;
   color: #ffffff !important;
   border-color: #a7a7a7 !important;
   border-radius: 8px !important;
+} */
+
+.custom-google-btn {
+  background-color: transparent !important;
+  color: #ffffff !important;
+  border: 1px solid #a7a7a7 !important;
+  border-radius: 8px !important;
+  font-size: 14px !important;
+  height: 40px !important;
+  width: 100% !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  cursor: pointer !important;
+  transition: background 0.3s;
+}
+
+.custom-google-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1) !important;
 }
 
 /* .nsm7Bb-HzV7m-LgbsSe {
@@ -261,6 +280,37 @@ main {
 
 .avatar-editor {
   background-color: #393941 !important;
+}
+
+.ant-modal-confirm .ant-modal-confirm-content {
+  color: #ffffff !important;
+}
+
+/* .custom-google-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background-color: white;
+  border: 1px solid #dcdcdc;
+  color: #757575;
+  font-weight: bold;
+  height: 40px;
+} */
+
+.google-icon {
+  font-size: 20px;
+  background: linear-gradient(
+    45deg,
+    #4285f4,
+    #34a853,
+    #fbbc05,
+    #ea4335
+  ) !important;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  /* color: transparent; */
 }
 
 /* Adjust positioning for shorter screens */

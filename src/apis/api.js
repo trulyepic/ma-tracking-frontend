@@ -479,6 +479,23 @@ export const googleSignIn = async (idToken) => {
   }
 };
 
+export const googleSignInV2 = async (accessToken) => {
+  try {
+    const response = await axios.post(
+      `${API_BASE_URL_AUTH}/google-v2`,
+      { access_token: accessToken }, // Send as "access_token"
+      {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Google Sign-In failed:", error);
+    throw error.response?.data || "Google Sign-In failed";
+  }
+};
+
 export const forgotPassword = async (email) => {
   return axios.post(`${API_BASE_URL}/forgot-password`, { email });
 };
