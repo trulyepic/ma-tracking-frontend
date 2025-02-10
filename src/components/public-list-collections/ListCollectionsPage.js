@@ -153,7 +153,7 @@ const ListCollectionsPage = () => {
       setSearchResults(results);
     } catch (error) {
       console.error("Error searching public collections:", error);
-      message.error("Failed to search public collections.");
+      // message.error("Failed to search public collections.");
     }
   };
 
