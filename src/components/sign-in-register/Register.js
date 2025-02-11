@@ -126,7 +126,7 @@ const Register = () => {
       message.info(
         "Registration successful! Please check your email to confirm your account."
       );
-      navigate("/confirm-email");
+      navigate("/confirm-email", { state: { email: values.userEmail } });
 
       // setMessageText(response.message || "User registered successfully!");
       // message.success("Registration Successful!");

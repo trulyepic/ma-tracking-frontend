@@ -7,7 +7,6 @@ import {
   googleSignIn,
   googleSignInV2,
   loginUser,
-  resendEmailConfirmation,
 } from "../../apis/api";
 import myLogo from "../../components/images/logo/myLogo.png";
 import {
@@ -26,38 +25,6 @@ const SignIn = () => {
   const [resendSuccess, setResendSuccess] = useState(false);
   const [resendError, setResendError] = useState("");
   const [selectedProvider, setSelectedProvider] = useState("gmail");
-
-  const handleResendConfirmation = async (email) => {
-    setResendLoading(true);
-    try {
-      // Use the latest selected provider
-      setSelectedProvider((currentProvider) => {
-        // console.log(
-        //   "Resending email for:",
-        //   email,
-        //   "Using provider:",
-        //   currentProvider
-        // ); // Debugging log
-        resendEmailConfirmation(email, currentProvider)
-          .then(() => {
-            setResendSuccess(true);
-            setResendError("");
-          })
-          .catch((error) => {
-            setResendError(error || "Failed to resend email.");
-          })
-          .finally(() => {
-            setResendLoading(false);
-          });
-
-        return currentProvider; // Return the current value to ensure correct state update
-      });
-    } catch (error) {
-      setResendError(error || "Failed to resend email.");
-    } finally {
-      setResendLoading(false);
-    }
-  };
 
   const onFinish = async (values) => {
     try {
@@ -92,7 +59,8 @@ const SignIn = () => {
           ),
           className: "signin-modals",
         });
-        navigate("/confirm-email");
+
+        navigate("/confirm-email", { state: { email: values.email } });
       } else if (
         errorMessage ===
         "This account was registered using Google. Please sign in with Google."

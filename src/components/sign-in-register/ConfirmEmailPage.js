@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams, useNavigate, useLocation } from "react-router-dom";
-import { confirmEmail, verifyEmailCode } from "../../apis/api";
+import {
+  confirmEmail,
+  resendVerificationCode,
+  verifyEmailCode,
+} from "../../apis/api";
 import { Result, Spin, Button, Input, message } from "antd";
 import { CheckCircleFilled, CheckOutlined } from "@ant-design/icons";
+import TooltipWrapper from "../util/TooltipWrapper";
 
 const ConfirmEmailPage = () => {
   const location = useLocation();
-  const email = location.state?.email;
+  // const email = location.state?.email;
   const fromForgotPassword = location.state?.fromForgotPassword;
 
   const [status, setStatus] = useState("pending"); // Default: Waiting for confirmation
@@ -15,9 +20,46 @@ const ConfirmEmailPage = () => {
   // );
   const [code, setCode] = useState("");
   const [loading, setLoading] = useState(false);
+  const [resendLoading, setResendLoading] = useState(false);
+  const [resendDisabled, setResendDisabled] = useState(false);
+  const [timeRemaining, setTimeRemaining] = useState(0);
+  const [email, setEmail] = useState(
+    location.state?.email || localStorage.getItem("userEmail")
+  );
 
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+
+  const RESEND_WAIT_TIME = 10 * 60 * 1000;
+
+  useEffect(() => {
+    if (location.state?.email) {
+      setEmail(location.state.email);
+      localStorage.setItem("userEmail", location.state.email);
+    }
+
+    const lastResendTime = localStorage.getItem("lastResendTime");
+    if (lastResendTime) {
+      const elapsedTime = Date.now() - parseInt(lastResendTime, 10);
+      if (elapsedTime < RESEND_WAIT_TIME) {
+        setResendDisabled(true);
+        setTimeRemaining(Math.ceil((RESEND_WAIT_TIME - elapsedTime) / 1000));
+
+        const interval = setInterval(() => {
+          setTimeRemaining((prev) => {
+            if (prev <= 1) {
+              clearInterval(interval);
+              setResendDisabled(false);
+              return 0;
+            }
+            return prev - 1;
+          });
+        }, 1000);
+
+        return () => clearInterval(interval);
+      }
+    }
+  }, [location.state?.email]);
 
   // useEffect(() => {
   //   const token = searchParams.get("token");
@@ -87,6 +129,40 @@ const ConfirmEmailPage = () => {
     }
   };
 
+  const handleResendCode = async () => {
+    if (!email) {
+      message.error("Email not found. Please go back and re-enter your email");
+      return;
+    }
+
+    setResendLoading(true);
+    try {
+      await resendVerificationCode(email);
+      message.success("Verification code resent successfully!");
+
+      // Save timestamp to local storage and disable button
+      localStorage.setItem("lastResendTime", Date.now().toString());
+      setResendDisabled(true);
+      setTimeRemaining(RESEND_WAIT_TIME / 1000);
+
+      // Start countdown timer
+      const interval = setInterval(() => {
+        setTimeRemaining((prev) => {
+          if (prev <= 1) {
+            clearInterval(interval);
+            setResendDisabled(false);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    } catch (error) {
+      message.error(error || "Failed to resend verification code.");
+    } finally {
+      setResendLoading(false);
+    }
+  };
+
   return (
     <div style={{ textAlign: "center", marginTop: "50px" }}>
       <h2 className="verification-txt">Email Verification</h2>
@@ -104,14 +180,29 @@ const ConfirmEmailPage = () => {
         pattern="[0-9]*"
       />
       <br />
-      <Button
-        type="primary"
-        onClick={handleSubmit}
-        loading={loading}
-        // icon={<CheckOutlined />}
-      >
-        Verify Email
-      </Button>
+      <div className="confirm-btn">
+        <Button
+          type="primary"
+          onClick={handleSubmit}
+          loading={loading}
+          // icon={<CheckOutlined />}
+        >
+          Verify Email
+        </Button>
+
+        <TooltipWrapper
+          tooltipContent={`You can resend the code in ${timeRemaining} seconds.`}
+          isDisabled={resendDisabled}
+        >
+          <Button
+            onClick={handleResendCode}
+            loading={resendLoading}
+            disabled={resendDisabled}
+          >
+            Resend Code
+          </Button>
+        </TooltipWrapper>
+      </div>
     </div>
   );
 };

@@ -443,22 +443,14 @@ export const verifyEmailCode = async (code) => {
   }
 };
 
-export const resendEmailConfirmation = async (email, provider = "gmail") => {
+export const resendVerificationCode = async (email) => {
   try {
-    const response = await axios.post(
-      `${API_BASE_URL}/resend-confirmation`,
-      null,
-      {
-        params: { email, provider }, // Send provider as a parameter
-      }
-    );
+    const response = await axios.post(`${API_BASE_URL}/resend-confirmation`, {
+      email,
+    });
     return response.data;
   } catch (error) {
-    console.error("Error resending confirmation email:", error);
-    if (error.response?.data) {
-      throw error.response.data;
-    }
-    throw "Failed to resend confirmation email";
+    throw error.response?.data || "Failed to resend verification code.";
   }
 };
 

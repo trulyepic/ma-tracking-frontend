@@ -318,6 +318,12 @@ main {
   /* color: transparent; */
 }
 
+.confirm-btn {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
 /* Adjust positioning for shorter screens */
 @media (max-height: 500px) {
   .register-container {
