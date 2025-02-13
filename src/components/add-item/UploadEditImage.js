@@ -39,6 +39,11 @@ const UploadEditImage = ({
     const file = info.file.originFileObj;
     if (file) {
       processFile(file);
+
+      if (info.file.status === "done") {
+        setPreviewUrl(URL.createObjectURL(info.file.originFileObj));
+        setImageFile(info.file.originFileObj);
+      }
       // const reader = new FileReader();
       // reader.onload = (e) => {
       //   setOriginalImage(e.target.result);
@@ -48,6 +53,8 @@ const UploadEditImage = ({
       // reader.readAsDataURL(file);
       // setImageFile(file);
       // setOriginalFileName(file.name);
+    } else if (info.file.status === "error") {
+      message.error("File upload failed");
     }
   };
 
@@ -152,6 +159,18 @@ const UploadEditImage = ({
           maxCount={1}
           onChange={handleFileChange}
           onRemove={resetImageState}
+          fileList={
+            imageFile
+              ? [
+                  {
+                    uid: "-1",
+                    name: originalFileName,
+                    status: "done",
+                    url: previewUrl,
+                  },
+                ]
+              : []
+          }
         >
           <Button icon={<UploadOutlined />} className="upload-text">
             {previewUrl ? "Change Image" : "Upload Image"} {required && "*"}
@@ -169,6 +188,7 @@ const UploadEditImage = ({
       </Button> */}
 
       <Modal
+        className="signin-modals"
         title="Image Preview"
         visible={isModalVisible}
         footer={[
