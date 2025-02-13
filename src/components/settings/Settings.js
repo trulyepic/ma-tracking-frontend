@@ -142,7 +142,7 @@ const Settings = () => {
     );
   };
 
-  //   console.log("userDetails: ", userDetails);
+  console.log("userDetails: ", userDetails);
   return (
     <div className="settings-container">
       <h2>{username}</h2>
@@ -180,6 +180,7 @@ const Settings = () => {
         />
         {usernameError && <p className="error-text">{usernameError}</p>}
       </div>
+      <Input disabled variant="borderless" value={userDetails.email} />
 
       {/* Change Password Section */}
       <div className="settings-section">
