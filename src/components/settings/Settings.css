@@ -22,6 +22,10 @@
   margin-bottom: 20px;
 }
 
+.email-text {
+  color: #e4e4e4d3 !important;
+}
+
 .avatar-display {
   display: flex;
   align-items: center;

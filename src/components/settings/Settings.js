@@ -180,7 +180,12 @@ const Settings = () => {
         />
         {usernameError && <p className="error-text">{usernameError}</p>}
       </div>
-      <Input disabled variant="borderless" value={userDetails.email} />
+      <Input
+        disabled
+        variant="borderless"
+        value={userDetails?.email || ""}
+        className="email-text"
+      />
 
       {/* Change Password Section */}
       <div className="settings-section">
