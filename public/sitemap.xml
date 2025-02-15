@@ -30,7 +30,7 @@
         <lastmod>2024-02-06</lastmod>
         <priority>0.5</priority>
     </url>
-    <url>
+    <!-- <url>
         <loc>https://www.ex-hibt.com/cookie-policy</loc>
         <lastmod>2024-02-06</lastmod>
         <priority>0.4</priority>
@@ -39,7 +39,7 @@
         <loc>https://www.ex-hibt.com/comment-policy</loc>
         <lastmod>2024-02-06</lastmod>
         <priority>0.4</priority>
-    </url>
+    </url> -->
     <url>
         <loc>https://www.ex-hibt.com/*</loc>
         <lastmod>2024-02-06</lastmod>
