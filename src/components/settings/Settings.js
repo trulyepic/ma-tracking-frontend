@@ -35,7 +35,7 @@ const Settings = () => {
       setUserDetails(details);
       setUsername(details?.name || "");
     } catch (error) {
-      message.error("Failed to fetch user details.");
+      message.error("Failed to fetch user details. Please Login!");
     }
   };
 

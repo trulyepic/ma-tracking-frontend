@@ -55,7 +55,7 @@ const Header = () => {
       setIsAuthenticated(true);
       setUserDetails(details);
     } catch (error) {
-      message.error("Failed to fetch user details.");
+      message.error("Failed to fetch user details. Please Login!");
       setIsAuthenticated(false);
       setUserDetails(null);
     }
