@@ -504,6 +504,7 @@ const CollectionHomePage = () => {
   // console.log("Collections:", collections);
 
   // console.log("home isguest: ", isGuest);
+  // console.log("userID: ", listUserDetails?.id);
 
   return (
     <div>
@@ -549,7 +550,10 @@ const CollectionHomePage = () => {
               : `${userName}'s Collections`}
           </h1>
           <div className="user-home-page-search-dropdown">
-            <FollowActions userId={id} isGuest={isGuest} />
+            <FollowActions
+              userId={listUserDetails?.id || id}
+              isGuest={isGuest}
+            />
             {/* <Button>follow</Button>
             <span>following</span>
             <span>followers</span> */}

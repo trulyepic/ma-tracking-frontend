@@ -207,7 +207,7 @@ const FollowActions = ({ userId, isGuest }) => {
             ))
           }
         >
-          {isGuest ? (
+          {isGuest && !userId ? (
             <div className="count-box">
               <span className="count">{formatFollowNumber(1200000)}</span>
               <span className="text">Followers</span>
@@ -240,7 +240,7 @@ const FollowActions = ({ userId, isGuest }) => {
             ))
           }
         >
-          {isGuest ? (
+          {isGuest && !userId ? (
             <div className="count-box">
               <span className="count">{formatFollowNumber(12500)}</span>
               <span className="text">Following</span>
